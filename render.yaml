@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: anda-ca-backend
+    runtime: docker
+    rootDir: backend
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: LOG_LEVEL
+        value: info
+      - key: CA_CACHE_TTL_MS
+        value: 300000
+      - key: CA_NEGATIVE_CACHE_TTL_MS
+        value: 60000
+      - key: CA_UPSTREAM_TIMEOUT_MS
+        value: 4000
+      - key: CA_UPSTREAM_RETRIES
+        value: 1
+      - key: CA_FALLBACK_WINDOW_MS
+        value: 300000
+      - key: CA_RATE_LIMIT_WINDOW_MS
+        value: 60000
+      - key: CA_RATE_LIMIT_MAX
+        value: 60
+      - key: CA_CACHE_PERSIST_ENABLED
+        value: true
+      - key: CA_WARMUP_ON_BOOT
+        value: false
+      - key: CA_WARMUP_CAS
+        value: 12345,98765
+      - key: CA_ADMIN_TOKEN_SHA256
+        sync: false
+      - key: CA_ADMIN_IP_ALLOWLIST
+        value: ""
+      - key: CA_ADMIN_BLOCK_RULES
+        value: ""
+
