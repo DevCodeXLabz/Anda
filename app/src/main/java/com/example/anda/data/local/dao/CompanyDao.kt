@@ -29,5 +29,17 @@ interface CompanyDao {
 
     @Query("DELETE FROM companies WHERE id = :id")
     suspend fun deleteById(id: Long)
-}
 
+    // ─── LGPD / GDPR ──────────────────────────────────────────────────────────
+
+    @Query(
+        "UPDATE companies SET legalName = :anonName, tradeName = :anonName, " +
+        "cnpj = :anonCnpj, contactWhatsapp = '', updatedAt = :now WHERE cnpj = :cnpj"
+    )
+    suspend fun anonymiseByCnpj(
+        cnpj: String,
+        anonName: String,
+        anonCnpj: String,
+        now: Long = System.currentTimeMillis()
+    ): Int
+}

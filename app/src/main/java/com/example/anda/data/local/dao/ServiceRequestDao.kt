@@ -103,5 +103,34 @@ interface ServiceRequestDao {
 
     @Query("DELETE FROM service_requests WHERE id = :id")
     suspend fun deleteById(id: Long)
-}
 
+    // ─── LGPD / GDPR ──────────────────────────────────────────────────────────
+
+    @Query("SELECT * FROM service_requests WHERE assignedEmployeeCpf = :cpf ORDER BY updatedAt DESC")
+    suspend fun findByAssignedEmployee(cpf: String): List<ServiceRequestEntity>
+
+    @Query("SELECT * FROM service_requests WHERE contractorCnpj = :cnpj ORDER BY updatedAt DESC")
+    suspend fun findByContractorCnpj(cnpj: String): List<ServiceRequestEntity>
+
+    @Query(
+        "UPDATE service_requests SET assignedEmployeeName = :placeholder, " +
+        "assignedEmployeeCpf = '000.000.000-00', updatedAt = :now " +
+        "WHERE assignedEmployeeCpf = :cpf"
+    )
+    suspend fun anonymiseAssigneeByCpf(
+        cpf: String,
+        placeholder: String,
+        now: Long = System.currentTimeMillis()
+    ): Int
+
+    @Query(
+        "UPDATE service_requests SET contractorName = :placeholder, " +
+        "contractorCnpj = '00.000.000/0000-00', updatedAt = :now " +
+        "WHERE contractorCnpj = :cnpj"
+    )
+    suspend fun anonymiseContractorByCnpj(
+        cnpj: String,
+        placeholder: String,
+        now: Long = System.currentTimeMillis()
+    ): Int
+}

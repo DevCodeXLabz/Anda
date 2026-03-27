@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.example.anda.R
-import com.example.anda.feature.requests.ServiceRequestsActivity
+import com.example.anda.feature.requests.ServiceRequestDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -49,10 +49,9 @@ class ServiceRequestNotificationService(private val context: Context) {
         requestType: String,
         requestId: String
     ) {
-        val intent = Intent(context, ServiceRequestsActivity::class.java).apply {
-            putExtra(ServiceRequestsActivity.EXTRA_FOCUS_REQUEST_CODE, requestId)
-            putExtra(ServiceRequestsActivity.EXTRA_TECHNICIAN_MODE, true)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val deepLinkUri = android.net.Uri.parse("anda://app/request?requestCode=$requestId")
+        val intent = Intent(Intent.ACTION_VIEW, deepLinkUri, context, ServiceRequestDetailActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 
         val pendingIntent = PendingIntent.getActivity(

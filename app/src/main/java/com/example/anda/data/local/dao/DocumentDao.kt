@@ -145,4 +145,22 @@ interface DocumentDao {
         """
     )
     suspend fun countExpiringBetween(nowEpochMs: Long, untilEpochMs: Long): Int
+
+    // ─── LGPD / GDPR ──────────────────────────────────────────────────────────
+
+    @Query("SELECT * FROM documents WHERE signedBy = :cpf ORDER BY updatedAt DESC")
+    suspend fun getAllByEmployee(cpf: String): List<DocumentEntity>
+
+    @Query("SELECT * FROM documents WHERE companyCnpj = :cnpj ORDER BY updatedAt DESC")
+    suspend fun getAllByCompany(cnpj: String): List<DocumentEntity>
+
+    @Query(
+        "UPDATE documents SET payloadJson = :placeholder, signedBy = NULL, signatureB64 = NULL, " +
+        "updatedAt = :now WHERE signedBy = :cpf"
+    )
+    suspend fun anonymiseByCpf(
+        cpf: String,
+        placeholder: String,
+        now: Long = System.currentTimeMillis()
+    ): Int
 }

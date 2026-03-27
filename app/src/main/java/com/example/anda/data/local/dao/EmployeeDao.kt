@@ -61,5 +61,17 @@ interface EmployeeDao {
         nextDate: Long,
         now: Long = System.currentTimeMillis()
     )
-}
 
+    // ─── LGPD / GDPR ──────────────────────────────────────────────────────────
+
+    @Query(
+        "UPDATE employees SET name = :anonName, cpf = :anonCpf, birthDate = '', notes = '', " +
+        "updatedAt = :now WHERE cpf = :cpf"
+    )
+    suspend fun anonymiseByCpf(
+        cpf: String,
+        anonName: String,
+        anonCpf: String,
+        now: Long = System.currentTimeMillis()
+    ): Int
+}

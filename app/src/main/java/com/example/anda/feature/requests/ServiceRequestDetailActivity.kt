@@ -60,7 +60,10 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        val requestCode = intent.getStringExtra(EXTRA_REQUEST_CODE).orEmpty().trim()
+        // Accept requestCode from Intent extra OR from deep-link URI query param
+        val requestCode = (intent.getStringExtra(EXTRA_REQUEST_CODE)
+            ?: intent.data?.getQueryParameter("requestCode"))
+            .orEmpty().trim()
         if (requestCode.isBlank()) {
             finish()
             return

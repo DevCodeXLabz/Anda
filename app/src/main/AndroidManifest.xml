@@ -52,9 +52,19 @@
             android:theme="@style/Theme.Anda" />
         <activity
             android:name=".feature.requests.ServiceRequestDetailActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/manifest_label_service_request_detail"
-            android:theme="@style/Theme.Anda" />
+            android:theme="@style/Theme.Anda">
+            <!-- Deep link: anda://app/request?requestCode=<code> -->
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:scheme="anda"
+                    android:host="app"
+                    android:path="/request" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".feature.diagnostics.DiagnosticsActivity"
             android:exported="false"
