@@ -321,6 +321,19 @@ class PppActivity : AppCompatActivity() {
         if (requestCompanyCnpj.length == 14 && binding.pppCnpjInput.text.isNullOrBlank()) {
             binding.pppCnpjInput.setText(requestCompanyCnpj)
             lastPrefilledCnpj = requestCompanyCnpj
+            // Track and publish company selection from incoming request
+            currentCompanyScope = requestCompanyCnpj
+            if (requestCompanyName.isNotBlank()) {
+                val companyFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to requestCompanyCnpj,
+                    ServiceIntegrationHelper.FieldIds.COMPANY_NAME to requestCompanyName
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = companyFields,
+                    sourceDocument = "PPP",
+                    companyScope = requestCompanyCnpj
+                )
+            }
             preloadLegalContext(requestCompanyCnpj)
         }
         if (requestCompanyName.isNotBlank() && binding.pppCompanyNameInput.text.isNullOrBlank()) {
