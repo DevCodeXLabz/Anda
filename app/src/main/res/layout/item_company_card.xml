@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="14dp"
+        android:gravity="center_vertical">
+
+        <!-- Avatar icon -->
+        <TextView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:text="🏢"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:background="@color/anda_bg" />
+
+        <!-- Company info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/companyLegalNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Razão Social"
+                android:textColor="@color/anda_text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/companyTradeNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome Fantasia"
+                android:textColor="@color/anda_navy"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/companyCnpjText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CNPJ: 00.000.000/0001-00"
+                    android:textColor="@color/anda_text_secondary"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/companyCnaeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CNAE: 0000-0/00"
+                    android:textColor="@color/anda_text_secondary"
+                    android:textSize="11sp"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/companyCityStateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cidade — UF"
+                android:textColor="@color/anda_text_secondary"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/companyContactText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contato operacional"
+                android:textColor="@color/anda_text_secondary"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Delete button (hidden in pick mode) -->
+        <ImageButton
+            android:id="@+id/deleteCompanyButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="@string/company_delete_button"
+            app:tint="#CC0000"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/requestCodeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/service_request_placeholder_code"
+            android:textColor="@color/anda_navy"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/requestContractorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_contractor"
+            android:textColor="@color/anda_text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/requestDocText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_document" />
+
+        <TextView
+            android:id="@+id/requestStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_status" />
+
+        <TextView
+            android:id="@+id/requestAssignedText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_assignee" />
+
+        <TextView
+            android:id="@+id/requestContactText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_contact" />
+
+        <TextView
+            android:id="@+id/requestUpdatedText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_updated"
+            android:textColor="@color/anda_text_secondary"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/requestLinkText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/service_request_placeholder_linked"
+            android:textColor="@color/anda_text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/requestOpsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/service_request_placeholder_ops"
+            android:textColor="@color/anda_text_secondary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/requestLinkBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_chip_status"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp"
+            android:text="@string/service_request_link_badge_unlinked"
+            android:textColor="@color/status_neutral"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/assignButton"
+                style="@style/Widget.Anda.Button.Tonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="@string/service_request_assign_button" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/progressButton"
+                style="@style/Widget.Anda.Button.Tonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="@string/service_request_progress_button" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doneButton"
+                style="@style/Widget.Anda.Button.Tonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/service_request_done_button" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/openDocumentButton"
+            style="@style/Widget.Anda.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/service_request_open_document_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/openLinkedButton"
+            style="@style/Widget.Anda.Button.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/service_request_open_linked_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/whatsappButton"
+            style="@style/Widget.Anda.Button.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/service_request_whatsapp_button" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+

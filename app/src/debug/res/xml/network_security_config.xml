@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ANDA SST — Network Security Configuration (DEBUG override)
+
+    This file REPLACES the main network_security_config.xml in debug builds.
+    It relaxes two restrictions that are required for local development:
+
+      1. User-installed certificates are trusted so that MITM-proxy tools
+         (Charles, mitmproxy, Proxyman) work during API development.
+         ⚠  NEVER allow user certificates in release builds.
+
+      2. Cleartext HTTP is permitted for the Android emulator's host alias
+         (10.0.2.2) and `localhost` so that a locally-running backend
+         (e.g. `npm run dev` on port 3000) can be reached without HTTPS.
+
+    All other hosts still require HTTPS even in debug builds.
+-->
+<network-security-config>
+
+    <!-- ── Base: HTTPS-only, system + user CAs in debug ─────────────── -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+            <!-- Allow user-installed / proxy certificates in debug only -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- ── Local development: allow cleartext on emulator / localhost ── -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Android emulator → host machine alias -->
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <!-- Physical device connected via adb reverse -->
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">127.0.0.1</domain>
+    </domain-config>
+
+</network-security-config>
+

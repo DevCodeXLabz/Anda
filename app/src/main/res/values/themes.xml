@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Anda" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/anda_navy</item>
+        <item name="colorOnPrimary">@color/anda_text_on_navy</item>
+        <item name="colorPrimaryContainer">@color/anda_navy_medium</item>
+        <item name="colorOnPrimaryContainer">@color/anda_text_on_navy</item>
+        <item name="colorSecondary">@color/anda_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorTertiary">@color/anda_gold</item>
+        <item name="android:colorBackground">@color/anda_bg</item>
+        <item name="colorSurface">@color/anda_surface</item>
+        <item name="android:statusBarColor">@color/anda_navy_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="materialButtonStyle">@style/Widget.Anda.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.Anda.Card</item>
+    </style>
+
+    <style name="Widget.Anda.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">24dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="Widget.Anda.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">24dp</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Widget.Anda.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <style name="Widget.Anda.SectionHeader" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/anda_text_secondary</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+</resources>

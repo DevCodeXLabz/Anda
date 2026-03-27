@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anda.local/contracts/ca.v1.json",
+  "title": "CA Lookup Response v1",
+  "type": "object",
+  "required": [
+    "ca",
+    "is_valid",
+    "item_name",
+    "risk_coverage",
+    "valid_until",
+    "source"
+  ],
+  "properties": {
+    "ca": {
+      "type": "string",
+      "pattern": "^[0-9]{3,}$"
+    },
+    "is_valid": {
+      "type": "boolean"
+    },
+    "item_name": {
+      "type": "string"
+    },
+    "risk_coverage": {
+      "type": "string"
+    },
+    "valid_until": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "cached": {
+      "type": "boolean"
+    },
+    "status_reason": {
+      "type": ["string", "null"],
+      "enum": ["expired", "not_found", "upstream_unavailable", null]
+    },
+    "request_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
+

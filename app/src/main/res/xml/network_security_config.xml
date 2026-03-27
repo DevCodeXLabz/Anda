@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ANDA SST — Network Security Configuration (production / main)
+
+    LGPD / Lei 13.709/2018 compliance:
+      • All outbound network traffic is required to use TLS (HTTPS).
+      • Cleartext (plain HTTP) is blocked for every host.
+      • Only the system CA bundle is trusted; user-installed certificates
+        are NOT trusted in release builds.
+
+    Debug builds inherit this config but also allow:
+      • User-installed / Charles-proxy certificates (src/debug override).
+      • Cleartext on 10.0.2.2 and localhost for local development servers.
+
+    See https://developer.android.com/privacy-and-security/security-config
+-->
+<network-security-config>
+
+    <!-- ── Base: HTTPS-only for every host ────────────────────────────── -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <!-- Trust the OS system CA bundle only -->
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+</network-security-config>
+

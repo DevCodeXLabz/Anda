@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── ANDA Brand ─────────────────────────────────────────── -->
+    <color name="anda_navy">#FF003366</color>
+    <color name="anda_navy_dark">#FF001F4D</color>
+    <color name="anda_navy_medium">#FF004A99</color>
+    <color name="anda_green">#FF4CAF50</color>
+    <color name="anda_green_light">#FF81C784</color>
+    <color name="anda_gold">#FFFACC15</color>
+    <color name="anda_bg">#FFF5F5F5</color>
+    <color name="anda_surface">#FFFFFFFF</color>
+    <color name="anda_text_primary">#FF1A1A2E</color>
+    <color name="anda_text_secondary">#FF6B7280</color>
+    <color name="anda_text_on_navy">#FFFFFFFF</color>
+    <color name="anda_navy_text_sub">#FFBBDEFB</color>
+    <color name="anda_navy_text_muted">#FF78B4F0</color>
+    <color name="anda_navy_text_tiny">#FF90CAF9</color>
+    <!-- ── Status ──────────────────────────────────────────────── -->
+    <color name="status_neutral">#FF5F6368</color>
+    <color name="status_normal">#FF188038</color>
+    <color name="status_moderate">#FFF29900</color>
+    <color name="status_high">#FFD93025</color>
+    <color name="status_critical">#FFA50E0E</color>
+    <color name="status_neutral_bg">#1F5F6368</color>
+    <color name="status_active_bg">#1F004A99</color>
+    <color name="status_normal_bg">#1F188038</color>
+    <color name="status_focus_bg">#33FACC15</color>
+    <!-- ── Misc ────────────────────────────────────────────────── -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="cat_incidentes">#FFF44336</color>
+</resources>

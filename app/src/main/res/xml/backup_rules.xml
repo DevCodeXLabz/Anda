@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Auto Backup rules for ANDA — API 30 and below.
+    API 31+ uses data_extraction_rules.xml instead.
+
+    LGPD / Lei 13.709/2018 compliance:
+      All domains are excluded from cloud backup.  The application database
+      (anda_app.db) contains AES-256-GCM-encrypted PII; shared preferences
+      may contain session tokens; exported files contain signed medical documents.
+      None of these should be transmitted to Google's backup servers.
+
+    See https://developer.android.com/guide/topics/data/autobackup
+-->
+<full-backup-content>
+    <!-- Entire Room database (includes all encrypted PII) -->
+    <exclude domain="database" path="." />
+
+    <!-- SharedPreferences — may contain auth tokens / session state -->
+    <exclude domain="sharedpref" path="." />
+
+    <!-- Internal files — exported PDFs and audit trails -->
+    <exclude domain="file" path="exports/" />
+    <exclude domain="file" path="pdfs/" />
+    <exclude domain="file" path="audits/" />
+
+    <!-- External storage files if used for document export -->
+    <exclude domain="external" path="." />
+</full-backup-content>

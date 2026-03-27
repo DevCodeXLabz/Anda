@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
+
+    <application
+        android:name=".AndaApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Anda">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <activity
+            android:name=".feature.documents.DocumentDetailActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_document_detail"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.documents.GenericSstDocumentActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_generic_sst_document"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.documents.DocumentsActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_documents"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.requests.ServiceRequestsActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_service_requests"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.requests.ServiceRequestDetailActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_service_request_detail"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.diagnostics.DiagnosticsActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_diagnostics"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.aso.AsoActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_aso"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.scanner.CaScannerActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_scanner_ca"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.pgr.PgrActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_pgr"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.cat.CatActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_cat"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.apr.AprActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_apr"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.pcmso.PcmsoActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_pcmso"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.os.OsActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_os"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.ppp.PppActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_ppp"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.epi.EpiManagementActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_epi_management"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.employees.EmployeeManagementActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_employee_management"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.companies.CompanyManagementActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_company_management"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.home.TechnicianHomeActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_technician_home"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.home.CompanyHomeActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_company_home"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.home.ClinicHomeActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_clinic_home"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.onboarding.PinUnlockActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_pin_unlock"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.onboarding.PinSetupActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_pin_setup"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/settings_title"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.analytics.EnterpriseAnalyticsActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_analytics"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.onboarding.ProfileSelectionActivity"
+            android:exported="false"
+            android:label="@string/manifest_label_profile_selection"
+            android:theme="@style/Theme.Anda" />
+        <activity
+            android:name=".feature.onboarding.LgpdConsentActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Anda">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Anda" />
+    </application>
+
+</manifest>

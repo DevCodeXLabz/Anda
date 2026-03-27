@@ -1,12 +1,9 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
+.idea/
+.kotlin/
 .DS_Store
 /build
 /captures
@@ -14,3 +11,32 @@
 .cxx
 local.properties
 keystore.properties
+
+# Firebase config (contains project keys – never commit)
+google-services.json
+app/google-services.json
+
+# JVM crash/replay logs
+hs_err_pid*.log
+replay_pid*.log
+app/hs_err_pid*.log
+app/replay_pid*.log
+
+# Backend runtime artifacts
+backend/node_modules/
+backend/.cache/
+backend/.env
+
+# Build/test output logs
+build_output.txt
+build_output*.log
+build_release_log.txt
+test_output.txt
+test_result.txt
+
+# Temp/session artifacts
+tmp-auto-max-summary.json
+tmp_*.html
+tmp_*.txt
+tmp_*.json
+

@@ -1,0 +1,1156 @@
+<resources>
+    <string name="app_name">Anda</string>
+    <string name="home_title">Anda - SST</string>
+    <string name="home_counts_placeholder">-</string>
+    <string name="home_status_ready">Pronto</string>
+    <string name="home_backend_checking">Backend: verificando…</string>
+    <string name="home_fallback_no_data">Fallback: sem dados</string>
+    <string name="home_cnpj_hint">Digite o CNPJ</string>
+    <string name="home_lookup_cnpj_button">Consultar CNPJ (BrasilAPI)</string>
+    <string name="home_open_scanner_button">Abrir Scanner de C.A.</string>
+    <string name="home_open_aso_button">Abrir ASO (offline)</string>
+    <string name="home_open_pgr_button">Abrir PGR - Gerenciamento de Riscos</string>
+    <string name="home_open_cat_button">⚠ Abrir CAT - Acidente do Trabalho</string>
+    <string name="home_open_apr_button">Abrir APR - Analise Preliminar de Risco</string>
+    <string name="home_open_os_button">Abrir OS - Ordem de Servico (NR-01)</string>
+    <string name="home_open_pcmso_button">Abrir PCMSO - Controle Medico Ocupacional</string>
+    <string name="home_open_ppp_button">Abrir PPP - Perfil Profissiografico</string>
+    <string name="home_open_documents_button">Abrir documentos locais</string>
+    <string name="documents_title">Documentos locais</string>
+    <string name="documents_filter_type_hint">Filtro tipo (ex.: ASO)</string>
+    <string name="documents_filter_company_hint">Filtro CNPJ (opcional)</string>
+    <string name="documents_filter_title_hint">Buscar por funcionário / título</string>
+    <string name="documents_filter_status_hint">Filtro status (ALL, DRAFT, SIGNED, SYNCED)</string>
+    <string name="documents_filter_all">ALL</string>
+    <string name="documents_filter_draft">DRAFT</string>
+    <string name="documents_filter_signed">SIGNED</string>
+    <string name="documents_filter_synced">SYNCED</string>
+    <string name="documents_filter_expiring">VENCENDO30D</string>
+    <string name="documents_apply_filter">Aplicar filtro</string>
+    <string name="documents_clear_filter">Limpar filtro</string>
+    <string name="documents_retry_sync">Reenviar pendencias agora</string>
+    <string name="documents_retry_failed">Reprocessar apenas falhas</string>
+    <string name="documents_sync_signed_unsynced">Sincronizar assinados nao sincronizados</string>
+    <string name="documents_sync_all_now">Sincronizar tudo agora</string>
+    <string name="documents_export_zip">Exportar ZIP de todos os PDFs</string>
+    <string name="documents_pending_sync_initial">Pendencias de sincronizacao: 0</string>
+    <string name="documents_draft_count_initial">Rascunhos: 0</string>
+    <string name="documents_signed_count_initial">Assinados: 0</string>
+    <string name="documents_synced_count_initial">Sincronizados: 0</string>
+    <string name="documents_pending_sync_template">Pendencias de sincronizacao: %1$d</string>
+    <string name="documents_draft_count_template">Rascunhos: %1$d</string>
+    <string name="documents_signed_count_template">Assinados: %1$d</string>
+    <string name="documents_synced_count_template">Sincronizados: %1$d</string>
+    <string name="documents_list_hint">Toque: detalhes | Pressione e segure: abrir PDF</string>
+    <string name="documents_list_empty">Nenhum documento local encontrado.</string>
+    <string name="documents_subtitle">Filtros, sincronizacao e exportacao</string>
+    <string name="document_detail_title">Detalhe do documento</string>
+    <string name="document_detail_loading">Carregando...</string>
+    <string name="document_detail_force_sync">Forcar sincronizacao deste documento</string>
+    <string name="document_detail_sign_now">Assinar documento agora</string>
+    <string name="document_detail_export_pdf_audit">Exportar PDF + auditoria</string>
+    <string name="document_detail_open_pdf">Abrir PDF exportado</string>
+    <string name="document_detail_copy_pdf_path">Copiar caminho do PDF</string>
+    <string name="document_detail_share_pdf">Compartilhar PDF</string>
+    <string name="document_detail_open_audit">Abrir auditoria TXT</string>
+    <string name="document_detail_share_audit">Compartilhar auditoria TXT</string>
+    <string name="document_detail_export_zip">Exportar pacote ZIP</string>
+    <string name="document_detail_share_zip">Compartilhar pacote ZIP</string>
+    <string name="document_detail_attempts_title">Historico de tentativas</string>
+    <string name="document_detail_no_data">Sem dados</string>
+    <string name="document_detail_versions_title">Historico de versoes</string>
+    <string name="document_detail_versions_empty">Sem historico de versoes</string>
+    <string name="document_detail_sign_requires_auth">Biometria/credencial indisponivel</string>
+    <string name="document_detail_sign_requires_content">Documento sem conteudo para assinatura</string>
+    <string name="document_detail_already_signed">Documento ja esta assinado</string>
+    <string name="document_detail_operation_in_progress">Operacao em andamento. Aguarde concluir.</string>
+    <string name="document_detail_signing_started">Assinatura iniciada. Confirme na biometria/credencial.</string>
+    <string name="document_detail_exporting_started">Exportacao em andamento...</string>
+    <string name="document_detail_sign_success">Documento assinado com sucesso</string>
+    <string name="document_detail_sign_success_with_signer">Documento assinado com sucesso por %1$s</string>
+    <string name="document_detail_export_success">PDF exportado com sucesso</string>
+    <string name="document_detail_export_success_with_file">PDF exportado com sucesso: %1$s</string>
+    <string name="document_detail_export_error">Falha ao exportar PDF/auditoria</string>
+    <string name="documents_sync_health_template">Saude do sync: %1$d total | %2$d nao sincronizados | taxa sucesso %3$.0f%%</string>
+    <string name="documents_retry_stats_template">Tentativas: %1$d | media/doc %2$.1f | max/doc %3$d</string>
+    <string name="documents_sync_health_with_retry_template">%1$s
+%2$s</string>
+    <string name="home_open_diagnostics_button">Abrir diagnostico tecnico</string>
+    <string name="home_open_latest_document_button">Abrir ultimo documento</string>
+    <string name="home_safe_mode_on">Modo seguro: ATIVO (protecao anti-crash)</string>
+    <string name="home_safe_mode_on_with_timer">Modo seguro: ATIVO (%1$d min restantes)</string>
+    <string name="home_safe_mode_off">Modo seguro: inativo</string>
+    <string name="home_lookup_history_title">Historico offline de consultas</string>
+    <string name="home_seed_demo_button">Inserir dados demo e propagar risco</string>
+    <string name="home_sync_button">Sincronizar pendencias</string>
+    <string name="home_sync_queue_label">Pendencias de sincronizacao local</string>
+    <string name="home_ops_summary_placeholder">Ops: carregando resumo…</string>
+    <string name="home_stability_normal">Estabilidade: NORMAL</string>
+    <string name="home_stability_moderate">Estabilidade: MODERADA (1 crash na janela)</string>
+    <string name="home_stability_high">Estabilidade: ALTA (2+ crashes na janela)</string>
+    <string name="home_stability_critical">Estabilidade: CRITICA (modo seguro ativo)</string>
+    <string name="home_stability_updated_template">Atualizado: %1$s</string>
+    <string name="home_ops_summary_template">Docs locais: %1$d | Pendencias sync: %2$d | Falhas: %3$d\nAssinados hoje: %4$d | Vencendo 30d: %5$d | Ultimo doc: %6$s</string>
+    <string name="dashboard_counts_template">Clinicas: %1$d\nEmpresas: %2$d\nFuncionarios: %3$d\nRiscos vinculados: %4$d\nPendencias para sync: %5$d</string>
+    <string name="company_result_placeholder">Nenhuma consulta realizada ainda.</string>
+    <string name="company_lookup_error_template">Falha na consulta: %1$s</string>
+    <string name="company_result_template">Razao social: %1$s\nNome fantasia: %2$s\nCNPJ: %3$s\nCNAE fiscal: %4$s\nGrau de risco sugerido: %5$d\nCidade: %6$s\nUF: %7$s\nCEP: %8$s</string>
+    <string name="lookup_history_empty">Sem historico local ainda.</string>
+    <string name="lookup_history_item_template">CNPJ: %1$s\nEmpresa: %2$s\nCNAE: %3$s\nGrau de risco: %4$d</string>
+    <string name="diagnostics_copy_full_success">Diagnostico completo copiado</string>
+    <string name="diagnostics_copy_private_success">Diagnostico privado copiado</string>
+    <string name="diagnostics_export_full_success">Diagnostico completo exportado</string>
+    <string name="diagnostics_export_shareable_success">Diagnostico privado exportado</string>
+    <string name="diagnostics_export_error">Falha ao exportar diagnostico</string>
+    <string name="diagnostics_title">Diagnostico tecnico</string>
+    <string name="diagnostics_safe_mode_checking">Modo seguro: verificando...</string>
+    <string name="diagnostics_crash_window_initial">Crashes na janela atual: -</string>
+    <string name="diagnostics_last_crash_initial">Ultimo crash fatal: sem registro</string>
+    <string name="diagnostics_recoverable_initial">Erros recuperaveis recentes: nenhum</string>
+    <string name="diagnostics_refresh_button">Atualizar diagnostico</string>
+    <string name="diagnostics_copy_full_button">Copiar diagnostico completo</string>
+    <string name="diagnostics_copy_private_button">Copiar diagnostico privado</string>
+    <string name="diagnostics_export_button">Exportar diagnostico TXT</string>
+    <string name="diagnostics_share_private_button">Compartilhar diagnostico privado</string>
+    <string name="diagnostics_enable_safe_mode_button">Reativar modo seguro (30 min)</string>
+    <string name="diagnostics_disable_safe_mode_button">Desativar modo seguro</string>
+    <string name="diagnostics_clear_button">Limpar diagnostico local</string>
+
+    <!-- ── Main Screen ─────────────────────────────────────────── -->
+    <string name="home_subtitle">Segurança e Medicina do Trabalho</string>
+    <string name="home_cnpj_section_title">🏢 Consultar Empresa</string>
+
+    <!-- Section headers -->
+    <string name="section_medicina">MEDICINA DO TRABALHO</string>
+    <string name="section_riscos">GERENCIAMENTO DE RISCOS</string>
+    <string name="section_registros">REGISTROS</string>
+    <string name="section_ferramentas">FERRAMENTAS</string>
+    <string name="section_documentos_avancados">DOCUMENTOS AVANCADOS</string>
+
+    <string name="generic_doc_title">Documento SST</string>
+    <string name="generic_doc_subtitle">Preencha os dados para gerar documento oficial offline</string>
+    <string name="generic_doc_hint_company_cnpj">CNPJ da empresa</string>
+    <string name="generic_doc_lookup_button">Buscar</string>
+    <string name="generic_doc_hint_company_name">Razao social</string>
+    <string name="generic_doc_hint_company_cnae">CNAE</string>
+    <string name="generic_doc_hint_responsible">Responsavel tecnico</string>
+    <string name="generic_doc_hint_objective">Objetivo do documento</string>
+    <string name="generic_doc_hint_scope">Escopo</string>
+    <string name="generic_doc_hint_details">Desenvolvimento tecnico</string>
+    <string name="generic_doc_hint_recommendations">Recomendacoes e plano de acao</string>
+    <string name="generic_doc_generate_button">Gerar documento offline</string>
+    <string name="generic_doc_sign_button">Registrar assinatura local</string>
+    <string name="generic_doc_export_button">Exportar PDF</string>
+    <string name="generic_doc_status_initial">Aguardando geracao do documento.</string>
+    <string name="generic_doc_preview_title">Preview</string>
+    <string name="generic_doc_specialized_title">Campos especificos do documento</string>
+    <string name="generic_doc_hint_aet_workstation">AET - Posto de trabalho</string>
+    <string name="generic_doc_hint_aet_task">AET - Atividade analisada</string>
+    <string name="generic_doc_hint_ltcat_agent">LTCAT - Agente nocivo</string>
+    <string name="generic_doc_hint_ltcat_intensity">LTCAT - Intensidade ou concentracao</string>
+    <string name="generic_doc_hint_ltcat_habituality">LTCAT - Habitualidade/permanencia</string>
+    <string name="generic_doc_hint_pt_issuer">PT - Emitente</string>
+    <string name="generic_doc_hint_pt_executor">PT - Executante</string>
+    <string name="generic_doc_hint_pt_authorizer">PT - Autorizador</string>
+    <string name="generic_doc_hint_nr_asset">NR - Equipamento, instalacao ou area avaliada</string>
+    <string name="generic_doc_hint_nr_critical">NR - Nao conformidade critica principal</string>
+    <string name="generic_doc_hint_nr_deadline">NR - Prazo de adequacao recomendado</string>
+    <string name="generic_doc_error_required">Obrigatorio</string>
+    <string name="generic_doc_missing_title">Checklist de preenchimento</string>
+    <string name="generic_doc_missing_all_good">Tudo certo. Documento pronto para gerar.</string>
+    <string name="generic_doc_missing_template">Falta preencher: %1$s</string>
+    <string name="generic_doc_missing_status_ready">Checklist de preenchimento - pronto</string>
+    <string name="generic_doc_missing_status_pending">Checklist de preenchimento - %1$d pendencia(s)</string>
+    <string name="generic_doc_missing_more_template">+%1$d pendencia(s) adicional(is)</string>
+    <string name="generic_doc_next_missing_button">Ir para proximo pendente</string>
+    <string name="generic_doc_next_missing_done">Nenhuma pendencia obrigatoria.</string>
+    <string name="generic_doc_prev_missing_button">Voltar para pendente anterior</string>
+    <string name="generic_doc_hint_pca_risk">PCA - Risco principal identificado</string>
+    <string name="generic_doc_hint_pca_measure">PCA - Medida de controle recomendada</string>
+    <string name="generic_doc_hint_ppr_epi">PPR - EPI obrigatorio para atividade</string>
+    <string name="generic_doc_hint_ppr_fit">PPR - Teste de vedacao/compatibilidade</string>
+    <string name="generic_doc_missing_pca_risk">PCA - Risco principal</string>
+    <string name="generic_doc_missing_pca_measure">PCA - Medida de controle</string>
+    <string name="generic_doc_missing_ppr_epi">PPR - EPI obrigatorio</string>
+    <string name="generic_doc_missing_ppr_fit">PPR - Teste de vedacao</string>
+    <string name="generic_doc_missing_cnpj">CNPJ valido (14 digitos)</string>
+    <string name="generic_doc_missing_company_name">Razao social</string>
+    <string name="generic_doc_missing_responsible">Responsavel tecnico</string>
+    <string name="generic_doc_missing_objective">Objetivo</string>
+    <string name="generic_doc_missing_scope">Escopo</string>
+    <string name="generic_doc_missing_details">Desenvolvimento tecnico</string>
+    <string name="generic_doc_missing_recommendations">Recomendacoes</string>
+    <string name="generic_doc_missing_aet_workstation">AET - Posto de trabalho</string>
+    <string name="generic_doc_missing_aet_task">AET - Atividade analisada</string>
+    <string name="generic_doc_missing_ltcat_agent">LTCAT - Agente nocivo</string>
+    <string name="generic_doc_missing_ltcat_intensity">LTCAT - Intensidade/concentracao</string>
+    <string name="generic_doc_missing_ltcat_habituality">LTCAT - Habitualidade/permanencia</string>
+    <string name="generic_doc_missing_pt_issuer">PT - Emitente</string>
+    <string name="generic_doc_missing_pt_executor">PT - Executante</string>
+    <string name="generic_doc_missing_pt_authorizer">PT - Autorizador</string>
+    <string name="generic_doc_missing_nr_asset">NR - Equipamento/area avaliada</string>
+    <string name="generic_doc_missing_nr_critical">NR - Nao conformidade critica</string>
+    <string name="generic_doc_missing_nr_deadline">NR - Prazo de adequacao</string>
+    <string name="generic_doc_hint_insalubridade_agent">Insalubridade - Agente nocivo principal</string>
+    <string name="generic_doc_hint_insalubridade_grau">Insalubridade - Grau (minimo/medio/maximo)</string>
+    <string name="generic_doc_hint_periculosidade_agent">Periculosidade - Agente perigoso principal</string>
+    <string name="generic_doc_hint_periculosidade_exp">Periculosidade - Tipo de exposicao</string>
+    <string name="generic_doc_hint_plano_acao_risco">Plano de Acao - Risco prioritario identificado</string>
+    <string name="generic_doc_hint_plano_acao_acao">Plano de Acao - Acao corretiva/preventiva</string>
+    <string name="generic_doc_missing_insalubridade_agent">Insalubridade - Agente nocivo</string>
+    <string name="generic_doc_missing_insalubridade_grau">Insalubridade - Grau de insalubridade</string>
+    <string name="generic_doc_missing_periculosidade_agent">Periculosidade - Agente perigoso</string>
+    <string name="generic_doc_missing_periculosidade_exp">Periculosidade - Exposicao</string>
+    <string name="generic_doc_missing_plano_acao_risco">Plano de Acao - Risco prioritario</string>
+    <string name="generic_doc_missing_plano_acao_acao">Plano de Acao - Acao corretiva</string>
+
+    <!-- Block 4: RESGATE, INVENTARIO, PGRTR, MAPA_RISCO specialization hints -->
+    <string name="generic_doc_hint_resgate_cenario">Resgate - Cenario de emergencia</string>
+    <string name="generic_doc_hint_resgate_equipe">Resgate - Composicao da equipe de resgate</string>
+    <string name="generic_doc_hint_inventario_setor">Inventario - Setor avaliado</string>
+    <string name="generic_doc_hint_inventario_risco">Inventario - Principal risco identificado</string>
+    <string name="generic_doc_hint_pgrtr_atividade">PGRTR - Atividade rural/tematica principal</string>
+    <string name="generic_doc_hint_pgrtr_risco">PGRTR - Risco especifico identificado</string>
+    <string name="generic_doc_hint_mapa_setor">Mapa de Risco - Setor mapeado</string>
+    <string name="generic_doc_hint_mapa_risco_grave">Mapa de Risco - Risco grave identificado</string>
+
+    <!-- Block 4: missing-field checklist labels -->
+    <string name="generic_doc_missing_resgate_cenario">Resgate - Cenario de emergencia</string>
+    <string name="generic_doc_missing_resgate_equipe">Resgate - Equipe de resgate</string>
+    <string name="generic_doc_missing_inventario_setor">Inventario - Setor avaliado</string>
+    <string name="generic_doc_missing_inventario_risco">Inventario - Risco principal</string>
+    <string name="generic_doc_missing_pgrtr_atividade">PGRTR - Atividade principal</string>
+    <string name="generic_doc_missing_pgrtr_risco">PGRTR - Risco especifico</string>
+    <string name="generic_doc_missing_mapa_setor">Mapa de Risco - Setor mapeado</string>
+    <string name="generic_doc_missing_mapa_risco_grave">Mapa de Risco - Risco grave</string>
+
+    <string name="prefill_context_reused_template">Contexto reaproveitado: %1$s/%2$s</string>
+
+    <!-- Document cards -->
+    <string name="doc_aso_title">ASO</string>
+    <string name="doc_aso_desc">Atestado de Saúde Ocupacional · NR-7</string>
+    <string name="doc_pcmso_title">PCMSO</string>
+    <string name="doc_pcmso_desc">Controle Médico Ocupacional · NR-7</string>
+    <string name="doc_pgr_title">PGR</string>
+    <string name="doc_pgr_desc">Gerenciamento de Riscos Ocupacionais · NR-01</string>
+    <string name="doc_apr_title">APR</string>
+    <string name="doc_apr_desc">Análise Preliminar de Risco</string>
+    <!-- APR screen specific strings (extracted from layout) -->
+    <string name="apr_header_title">🔍  APR</string>
+    <string name="apr_company_section_title">🏢  Dados da Empresa</string>
+    <string name="apr_task_section_title">⚠️  Atividade e Responsável</string>
+    <string name="apr_generate_button">Gerar APR Offline</string>
+    <string name="apr_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="apr_export_button">📄  Exportar PDF</string>
+    <string name="apr_status_waiting">Aguardando geração da APR.</string>
+    <string name="apr_hint_task_name">Nome da atividade / tarefa</string>
+    <string name="apr_hint_authorizations">Trabalhadores envolvidos (um por linha)</string>
+    <string name="apr_lookup_invalid_cnpj">CNPJ inválido</string>
+    <string name="apr_lookup_searching">Buscando...</string>
+    <string name="apr_lookup_not_found_template">Não encontrado: %1$s</string>
+    <string name="apr_document_title_template">APR - %1$s</string>
+    <string name="apr_generated_template">APR gerada offline: %1$s</string>
+    <string name="apr_error_required_field">Obrigatório</string>
+    <string name="apr_error_cnpj_invalid_field">CNPJ inválido</string>
+    <string name="apr_error_message_cnpj_invalid">Informe um CNPJ válido com 14 dígitos</string>
+    <string name="apr_error_message_task_required">Informe o nome da atividade</string>
+    <string name="apr_error_message_technician_required">Informe o responsável técnico</string>
+    <string name="apr_error_generate_before_sign">Gere a APR antes de assinar</string>
+    <string name="apr_error_biometric_unavailable">Biometria/credencial não disponível</string>
+    <string name="apr_signed_by_fallback">Responsável Técnico</string>
+    <string name="apr_signed_status_template">✅ Assinado por %1$s em %2$s
+Assinatura Eletrônica Avançada — Lei 14.063/2020</string>
+    <string name="apr_error_generate_before_export">Gere a APR antes</string>
+    <string name="apr_export_title">APR - ANDA</string>
+    <string name="apr_export_status_template">PDF: %1$s
+Auditoria TXT: %2$s</string>
+    <string name="apr_error_export_failed">Falha ao exportar</string>
+    <string name="apr_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="apr_required_pending_template">Falta preencher: %1$s</string>
+    <string name="apr_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="apr_required_label_task">Nome da atividade</string>
+    <string name="apr_required_label_technician">Responsável técnico</string>
+
+    <!-- PGR screen strings (extracted from layout) -->
+    <string name="pgr_header_title">🛡️  PGR</string>
+    <string name="pgr_subtitle">Programa de Gerenciamento de Riscos · NR-01</string>
+    <string name="pgr_disclaimer">Portaria MTE 672/2021 — documento offline.</string>
+    <string name="pgr_technician_section_title">🧑‍💼  Técnico Responsável e Vigência</string>
+    <string name="pgr_generate_button">Gerar PGR Offline</string>
+    <string name="pgr_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="pgr_export_button">📄  Exportar PDF</string>
+    <string name="pgr_status_waiting">Aguardando geração do PGR.</string>
+    <string name="pgr_lookup_invalid_cnpj">CNPJ inválido. Informe 14 dígitos.</string>
+    <string name="pgr_lookup_searching_company">Buscando empresa...</string>
+    <string name="pgr_lookup_searching">Buscando...</string>
+    <string name="pgr_lookup_company_grade_template">%1$s | Grau: %2$d</string>
+    <string name="pgr_lookup_not_found_template">Não encontrado: %1$s</string>
+    <string name="pgr_hint_technician">Responsável técnico</string>
+    <string name="pgr_hint_crea">CREA (opcional)</string>
+    <string name="pgr_hint_year">Ano de referência</string>
+    <string name="pgr_hint_timeline">Cronograma de implementação</string>
+    <string name="pgr_hint_observations">Observações gerais</string>
+    <string name="pgr_document_title_template">PGR - %1$s (%2$d)</string>
+    <string name="pgr_generated_template">PGR gerado e salvo offline: %1$s</string>
+    <string name="pgr_error_required_field">Obrigatório</string>
+    <string name="pgr_error_cnpj_invalid_field">CNPJ inválido</string>
+    <string name="pgr_error_message_cnpj_invalid">Informe um CNPJ válido com 14 dígitos</string>
+    <string name="pgr_error_message_company_name_required">Informe a razão social</string>
+    <string name="pgr_error_message_technician_required">Informe o responsável técnico</string>
+    <string name="pgr_error_generate_before_sign">Gere o PGR antes de assinar</string>
+    <string name="pgr_error_biometric_unavailable">Biometria/credencial não disponível</string>
+    <string name="pgr_signed_by_fallback">Responsável Técnico</string>
+    <string name="pgr_signed_status_template">✅ Assinado por %1$s em %2$s
+Assinatura Eletrônica Avançada — Lei 14.063/2020</string>
+    <string name="pgr_error_generate_before_export">Gere o PGR antes de exportar</string>
+    <string name="pgr_export_title">PGR - ANDA</string>
+    <string name="pgr_export_status_template">PDF exportado: %1$s
+Auditoria TXT: %2$s</string>
+    <string name="pgr_error_export_failed">Falha ao exportar PDF</string>
+    <string name="pgr_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="pgr_required_pending_template">Falta preencher: %1$s</string>
+    <string name="pgr_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="pgr_required_label_company_name">Razão social</string>
+    <string name="pgr_required_label_technician">Responsável técnico</string>
+    <!-- CAT screen strings -->
+    <string name="cat_header_title">⚠️  CAT</string>
+    <string name="cat_subtitle">Comunicação de Acidente do Trabalho</string>
+    <string name="cat_urgency_text">⏰ Prazo legal: até 24h após o acidente (Lei 8.213/91, art. 22)</string>
+    <string name="cat_company_section_title">🏢  Dados da Empresa</string>
+    <string name="cat_lookup_button">Buscar</string>
+    <string name="cat_acidentado_section_title">👤  Dados do Acidentado</string>
+    <string name="cat_acidente_section_title">🚨  Dados do Acidente</string>
+    <string name="cat_generate_button">Gerar CAT Offline</string>
+    <string name="cat_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="cat_export_button">📄  Exportar PDF</string>
+    <string name="cat_status_waiting">Aguardando geração da CAT.</string>
+    <string name="cat_hint_employee_name">Nome completo do acidentado</string>
+    <string name="cat_hint_employee_cpf">CPF do acidentado</string>
+    <string name="cat_hint_accident_datetime">Data e hora do acidente (dd/MM/aaaa HH:mm)</string>
+    <string name="cat_hint_location">Local do acidente</string>
+    <string name="cat_hint_body_part">Parte do corpo afetada</string>
+    <string name="cat_hint_injury_type">Tipo de lesão (corte, fratura, contusão...)</string>
+    <string name="cat_hint_description">Descrição detalhada do acidente</string>
+    <string name="cat_hint_medical_attention">Atendimento médico realizado</string>
+    <string name="cat_hint_reported_by">Responsável pela emissão</string>
+    <string name="cat_lookup_invalid_cnpj">CNPJ inválido. Informe 14 dígitos.</string>
+    <string name="cat_lookup_searching_company">Buscando empresa...</string>
+    <string name="cat_lookup_searching">Buscando...</string>
+    <string name="cat_lookup_not_found_template">Não encontrado: %1$s</string>
+    <string name="cat_not_informed">Não informado</string>
+    <string name="cat_document_title_template">CAT - %1$s</string>
+    <string name="cat_generated_status_template">CAT gerada e salva offline: %1$s
+⚠ Registre no INSS: www.gov.br/inss em até 24h.</string>
+    <string name="cat_error_required">Obrigatório</string>
+    <string name="cat_error_cnpj_invalid">CNPJ inválido</string>
+    <string name="cat_error_cpf_invalid">CPF inválido</string>
+    <string name="cat_error_generate_before_sign">Gere a CAT antes de assinar</string>
+    <string name="cat_error_biometric_unavailable">Biometria/credencial não disponível</string>
+    <string name="cat_signed_by_fallback">Responsável</string>
+    <string name="cat_signed_status_template">✅ Assinado por %1$s em %2$s
+Assinatura Eletrônica Avançada — Lei 14.063/2020
+⚠ Registre no INSS: www.gov.br/inss em até 24h.</string>
+    <string name="cat_error_generate_before_export">Gere a CAT antes de exportar</string>
+    <string name="cat_export_title">CAT - ANDA</string>
+    <string name="cat_export_status_template">PDF exportado: %1$s
+Auditoria TXT: %2$s
+⚠ Registre no INSS: www.gov.br/inss</string>
+    <string name="cat_error_export_failed">Falha ao exportar PDF</string>
+    <string name="cat_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="cat_required_pending_template">Falta preencher: %1$s</string>
+    <string name="cat_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="cat_required_label_company_name">Razão social</string>
+    <string name="cat_required_label_employee_name">Nome do acidentado</string>
+    <string name="cat_required_label_employee_cpf">CPF do acidentado</string>
+    <string name="cat_required_label_description">Descrição do acidente</string>
+    <string name="cat_required_label_reported_by">Responsável pela emissão</string>
+    <string name="cat_error_message_cnpj_invalid">Informe um CNPJ válido com 14 dígitos</string>
+    <string name="cat_error_message_company_name_required">Informe a razão social</string>
+    <string name="cat_error_message_employee_name_required">Informe o nome do acidentado</string>
+    <string name="cat_error_message_employee_cpf_invalid">Informe um CPF válido com 11 dígitos</string>
+    <string name="cat_error_message_description_required">Informe a descrição detalhada do acidente</string>
+    <string name="cat_error_message_reported_by_required">Informe o responsável pela emissão</string>
+
+    <!-- EPI management strings -->
+    <string name="epi_header_title">🦺  EPI</string>
+    <string name="epi_subtitle">Gestão de Equipamentos de Proteção Individual</string>
+    <string name="epi_ca_explain">CA = Certificado de Aprovação (MTE/INMETRO)</string>
+    <string name="epi_scan_button">📷 Escanear CA</string>
+    <string name="epi_add_button">+ Adicionar EPI</string>
+    <string name="epi_summary_title">📊  Resumo de Conformidade</string>
+    <string name="epi_valid_label">Válidos</string>
+    <string name="epi_expiring_label">Vencendo</string>
+    <string name="epi_expired_label">Vencidos</string>
+    <string name="epi_new_title">➕  Novo EPI</string>
+    <string name="epi_hint_type">Tipo de EPI (ex: Capacete, Luva, Bota)</string>
+    <string name="epi_hint_ca_number">Número do C.A. (Certificado de Aprovação)</string>
+    <string name="epi_hint_manufacturer">Fabricante (opcional)</string>
+    <string name="epi_hint_expiry">Validade do C.A. (dd/MM/aaaa)</string>
+    <string name="epi_save_button">Salvar EPI</string>
+    <string name="epi_cancel_button">Cancelar</string>
+    <string name="epi_list_header">EPIs CADASTRADOS</string>
+    <string name="epi_empty_placeholder">Nenhum EPI cadastrado ainda.\nClique em + Adicionar EPI para começar.</string>
+
+    <!-- ASO (Atestado de Saúde Ocupacional) strings -->
+    <string name="aso_header_title">🩺  ASO</string>
+    <string name="aso_subtitle">Atestado de Saúde Ocupacional · NR-7</string>
+    <string name="aso_status_initial">Registro operacional local.</string>
+    <string name="aso_exam_section_title">📋  Tipo de Exame</string>
+    <string name="aso_employee_section_title">👤  Dados do Funcionário</string>
+    <string name="aso_medical_section_title">⚕️  Médico e Clínica</string>
+    <string name="aso_generate_button">Gerar ASO Offline</string>
+    <string name="aso_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="aso_export_button">📄  Exportar PDF</string>
+    <string name="aso_status_waiting">Aguardando geração do ASO.</string>
+    <string name="aso_exam_type_admission">Admissional</string>
+    <string name="aso_exam_type_periodic">Periódico</string>
+    <string name="aso_exam_type_return">Retorno ao Trabalho</string>
+    <string name="aso_exam_type_removal">Afastamento</string>
+    <string name="aso_exam_type_exit">Demissional</string>
+    <string name="aso_lookup_invalid_cnpj">CNPJ inválido. Informe 14 dígitos.</string>
+    <string name="aso_lookup_searching_company">Buscando empresa...</string>
+    <string name="aso_lookup_company_risk_template">Empresa: %1$s | Grau de risco: %2$d</string>
+    <string name="aso_lookup_not_found_template">Não encontrado: %1$s</string>
+    <string name="aso_default_doctor_crm">CRM-N/A</string>
+    <string name="aso_default_clinic_name">Clínica SST</string>
+    <string name="aso_default_clinic_cnpj">00000000000000</string>
+    <string name="aso_document_title_template">ASO - %1$s</string>
+    <string name="aso_error_cnpj_required_field">CNPJ obrigatório</string>
+    <string name="aso_error_cnpj_required_message">Informe o CNPJ da empresa</string>
+    <string name="aso_error_cnpj_invalid_field">CNPJ inválido</string>
+    <string name="aso_error_cnpj_invalid_message">CNPJ deve ter 14 dígitos</string>
+    <string name="aso_error_company_name_required_field">Razão social obrigatória</string>
+    <string name="aso_error_company_name_required_message">Informe a razão social</string>
+    <string name="aso_error_cnae_required_field">CNAE obrigatório</string>
+    <string name="aso_error_cnae_required_message">Informe o CNAE</string>
+    <string name="aso_error_employee_name_required_field">Nome obrigatório</string>
+    <string name="aso_error_employee_name_required_message">Informe o nome do funcionário</string>
+    <string name="aso_error_employee_cpf_invalid_field">CPF inválido</string>
+    <string name="aso_error_employee_cpf_invalid_message">CPF deve ter 11 dígitos</string>
+    <string name="aso_error_doctor_required_field">Responsável obrigatório</string>
+    <string name="aso_error_doctor_required_message">Informe o médico responsável</string>
+    <string name="aso_error_generate_before_sign">Gere o ASO antes de assinar</string>
+    <string name="aso_error_biometric_unavailable">Biometria/credencial indisponível no aparelho</string>
+    <string name="aso_signed_by_fallback">Responsável</string>
+    <string name="aso_error_generate_before_export">Gere o ASO antes de exportar</string>
+    <string name="aso_export_title">ASO - ANDA</string>
+    <string name="aso_error_export_failed">Falha ao exportar PDF</string>
+    <string name="aso_hint_employee_name">Nome completo do funcionário</string>
+    <string name="aso_hint_employee_cpf">CPF do funcionário</string>
+    <string name="aso_hint_doctor_name">Médico responsável</string>
+    <string name="aso_hint_doctor_crm">CRM</string>
+    <string name="aso_hint_clinic_name">Clínica / Ambulatório</string>
+    <string name="aso_hint_clinic_cnpj">CNPJ da clínica</string>
+    <string name="aso_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="aso_required_pending_template">Falta preencher: %1$s</string>
+    <string name="aso_required_pending_more_template">Falta preencher: %1$s e +%2$d campo(s)</string>
+    <string name="aso_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="aso_required_label_company_name">Razão social</string>
+    <string name="aso_required_label_cnae">CNAE</string>
+    <string name="aso_required_label_employee_name">Nome do funcionário</string>
+    <string name="aso_required_label_employee_cpf">CPF do funcionário</string>
+    <string name="aso_required_label_doctor_name">Médico responsável</string>
+
+    <!-- PCMSO strings -->
+    <string name="pcmso_header_title">📋  PCMSO</string>
+    <string name="pcmso_subtitle">Programa de Controle Médico de Saúde Ocupacional · NR-7</string>
+    <string name="pcmso_company_section">🏢  Empresa</string>
+    <string name="pcmso_doctor_section">⚕️  Médico e Clínica Coordenadora</string>
+    <string name="pcmso_generate_button">Gerar PCMSO Offline</string>
+    <string name="pcmso_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="pcmso_export_button">📄  Exportar PDF</string>
+    <string name="pcmso_status_waiting">Aguardando geração do PCMSO.</string>
+    <string name="pcmso_lookup_invalid_cnpj">CNPJ inválido</string>
+    <string name="pcmso_lookup_searching">Buscando...</string>
+    <string name="pcmso_lookup_not_found">Não encontrado</string>
+    <string name="pcmso_hint_doctor">Médico coordenador</string>
+    <string name="pcmso_hint_crm">CRM</string>
+    <string name="pcmso_hint_clinic_name">Clínica responsável</string>
+    <string name="pcmso_hint_clinic_cnpj">CNPJ da clínica</string>
+    <string name="pcmso_hint_year">Ano de referência</string>
+    <string name="pcmso_hint_risk_assessment">Avaliação de riscos (agentes, setores)</string>
+    <string name="pcmso_default_clinic_cnpj">00000000000000</string>
+    <string name="pcmso_default_clinic_name">Clínica SST</string>
+    <string name="pcmso_default_risk_assessment">Avaliação de riscos a ser complementada conforme GRO/PGR da empresa.</string>
+    <string name="pcmso_schedule_admission">Obrigatório</string>
+    <string name="pcmso_schedule_periodic">Anual ou conforme NR-7</string>
+    <string name="pcmso_schedule_exit">Obrigatório</string>
+    <string name="pcmso_objective_health">Promover a saúde ocupacional dos trabalhadores</string>
+    <string name="pcmso_objective_prevent">Prevenir doenças ocupacionais</string>
+    <string name="pcmso_objective_nr7">Cumprir NR-7</string>
+    <string name="pcmso_exam_audiometry">Audiometria</string>
+    <string name="pcmso_exam_visual_acuity">Acuidade visual</string>
+    <string name="pcmso_exam_hemogram">Hemograma completo</string>
+    <string name="pcmso_document_title_template">PCMSO - %1$s (%2$d)</string>
+    <string name="pcmso_program_name_template">PCMSO %1$s - %2$s</string>
+    <string name="pcmso_generated_template">PCMSO gerado offline: %1$s</string>
+    <string name="pcmso_error_cnpj_invalid_field">CNPJ inválido</string>
+    <string name="pcmso_error_cnpj_invalid_message">Informe um CNPJ válido com 14 dígitos</string>
+    <string name="pcmso_error_doctor_required_field">Obrigatório</string>
+    <string name="pcmso_error_doctor_required_message">Informe o médico coordenador</string>
+    <string name="pcmso_error_generate_before_sign">Gere o PCMSO antes de assinar</string>
+    <string name="pcmso_error_biometric_unavailable">Biometria/credencial não disponível</string>
+    <string name="pcmso_signed_by_fallback">Médico Responsável</string>
+    <string name="pcmso_signed_template">✅ Assinado por %1$s em %2$s
+Assinatura Eletrônica Avançada — Lei 14.063/2020</string>
+    <string name="pcmso_error_generate_before_export">Gere o PCMSO antes</string>
+    <string name="pcmso_export_title">PCMSO - ANDA</string>
+    <string name="pcmso_export_result_template">PDF: %1$s
+Auditoria TXT: %2$s</string>
+    <string name="pcmso_error_export_failed">Falha ao exportar</string>
+    <string name="pcmso_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="pcmso_required_pending_template">Falta preencher: %1$s</string>
+    <string name="pcmso_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="pcmso_required_label_doctor">Médico coordenador</string>
+    <string name="pcmso_program_section">📝  Identificação do Programa</string>
+    <string name="pcmso_hint_program_name">Denominação do programa (ex: PCMSO 2025 – Empresa Ltda)</string>
+    <string name="pcmso_exams_section">🔬  Exames Complementares</string>
+    <string name="pcmso_exam_checkbox_medical">Avaliação Médica Clínica</string>
+    <string name="pcmso_exam_checkbox_audiology">Audiometria Tonal</string>
+    <string name="pcmso_exam_checkbox_spirometry">Espirometria</string>
+    <string name="pcmso_exam_checkbox_ecg">Eletrocardiograma</string>
+    <string name="pcmso_exam_checkbox_hemogram2">Hemograma Completo</string>
+    <string name="pcmso_exam_checkbox_visual">Acuidade Visual</string>
+    <string name="pcmso_exam_other_hint">Outros exames (separe por vírgula)</string>
+    <string name="pcmso_schedule_section">📅  Tipos de Exame Aplicáveis</string>
+    <string name="pcmso_schedule_return_label">Exame de Retorno ao Trabalho</string>
+    <string name="pcmso_schedule_removal_label">Exame de Mudança de Função (Readaptação)</string>
+    <string name="pcmso_hint_observations">Observações adicionais (opcional)</string>
+    <string name="pcmso_schedule_return">Conforme indicação médica</string>
+    <string name="pcmso_schedule_removal">Conforme mudança de função/setor</string>
+    <string name="pcmso_error_program_name_required">Nome do programa é obrigatório (mín. 10 caracteres)</string>
+    <string name="pcmso_error_no_exam_selected">Selecione ao menos 1 exame complementar</string>
+    <string name="pcmso_required_label_program_name">Nome do Programa</string>
+    <string name="pcmso_required_label_exams">Exames</string>
+
+    <!-- OS (Ordem de Serviço) strings -->
+    <string name="os_header_title">📝  OS</string>
+    <string name="os_subtitle">Ordem de Serviço · NR-01</string>
+    <string name="os_company_section">🏢  Empresa</string>
+    <string name="os_workers_section">👷  Trabalhador e Atividades</string>
+    <string name="os_generate_button">Gerar OS Offline</string>
+    <string name="os_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="os_export_button">📄  Exportar PDF</string>
+    <string name="os_status_waiting">Aguardando geração da OS.</string>
+    <string name="os_lookup_invalid_cnpj">CNPJ inválido</string>
+    <string name="os_lookup_searching">Buscando...</string>
+    <string name="os_lookup_not_found">Não encontrado</string>
+    <string name="os_hint_employee_name">Nome do trabalhador</string>
+    <string name="os_hint_employee_cpf">CPF</string>
+    <string name="os_hint_employee_role">Função / cargo</string>
+    <string name="os_hint_sector">Setor</string>
+    <string name="os_hint_activities">Atividades exercidas</string>
+    <string name="os_hint_responsible">Responsável técnico</string>
+    <string name="os_default_employee_cpf">00000000000</string>
+    <string name="os_default_employee_role">Cargo não informado</string>
+    <string name="os_default_sector">Geral</string>
+    <string name="os_document_title_template">OS - %1$s | %2$s</string>
+    <string name="os_generated_template">OS gerada offline: %1$s</string>
+    <string name="os_error_cnpj_invalid_field">CNPJ inválido</string>
+    <string name="os_error_cnpj_invalid_message">Informe um CNPJ válido com 14 dígitos</string>
+    <string name="os_error_employee_required_field">Obrigatório</string>
+    <string name="os_error_employee_required_message">Informe o nome do trabalhador</string>
+    <string name="os_error_activities_required_field">Obrigatório</string>
+    <string name="os_error_activities_required_message">Informe as atividades exercidas</string>
+    <string name="os_error_responsible_required_field">Obrigatório</string>
+    <string name="os_error_responsible_required_message">Informe o responsável técnico</string>
+    <string name="os_error_generate_before_sign">Gere a OS antes de assinar</string>
+    <string name="os_error_biometric_unavailable">Biometria/credencial não disponível</string>
+    <string name="os_signed_by_fallback">Responsável Técnico</string>
+    <string name="os_signed_template">✅ Assinado por %1$s em %2$s
+Assinatura Eletrônica Avançada — Lei 14.063/2020</string>
+    <string name="os_error_generate_before_export">Gere a OS antes</string>
+    <string name="os_export_title">OS - ANDA</string>
+    <string name="os_export_result_template">PDF: %1$s
+Auditoria TXT: %2$s</string>
+    <string name="os_error_export_failed">Falha ao exportar</string>
+    <string name="os_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="os_required_pending_template">Falta preencher: %1$s</string>
+    <string name="os_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="os_required_label_employee">Nome do trabalhador</string>
+    <string name="os_required_label_activities">Atividades exercidas</string>
+    <string name="os_required_label_responsible">Responsável técnico</string>
+    <string name="audit_not_generated">Nao gerado</string>
+
+    <!-- LGPD top icon -->
+    <string name="lgpd_logo_icon">🛡️</string>
+    <string name="doc_os_title">OS</string>
+    <string name="doc_os_desc">Ordem de Serviço · NR-01</string>
+    <string name="doc_cat_title">CAT</string>
+    <string name="doc_cat_desc">Comunicação de Acidente de Trabalho</string>
+    <string name="doc_ppp_title">PPP</string>
+    <string name="doc_ppp_desc">Perfil Profissiográfico Previdenciário</string>
+    <string name="ppp_header_title">👤  PPP</string>
+    <string name="ppp_subtitle">Perfil Profissiográfico Previdenciário</string>
+    <string name="ppp_generate_button">Gerar PPP Offline</string>
+    <string name="ppp_sign_button">✍  Registrar Assinatura Local</string>
+    <string name="ppp_export_button">📄  Exportar PDF</string>
+    <string name="ppp_status_waiting">Aguardando geração do PPP.</string>
+    <string name="ppp_lookup_invalid_cnpj">CNPJ inválido</string>
+    <string name="ppp_lookup_searching">Buscando...</string>
+    <string name="ppp_lookup_not_found">Não encontrado</string>
+    <string name="ppp_workers_section_title">👷  Trabalhador</string>
+    <string name="ppp_hint_employee_name">Nome completo</string>
+    <string name="ppp_hint_employee_cpf">CPF</string>
+    <string name="ppp_hint_role">Função / cargo</string>
+    <string name="ppp_hint_sector">Setor</string>
+    <string name="ppp_hint_admission_date">Data de admissão (dd/MM/aaaa)</string>
+    <string name="ppp_hint_dismissal_date">Data de desligamento (vazio = ativo)</string>
+    <string name="ppp_hint_activities">Atividades e exposições</string>
+    <string name="ppp_hint_medical_exams">Exames médicos realizados (opcional)</string>
+    <string name="ppp_hint_responsible_name">Responsável técnico (nome)</string>
+    <string name="ppp_hint_responsible_cpf">CPF do responsável</string>
+    <string name="ppp_default_employee_cpf">00000000000</string>
+    <string name="ppp_default_role">Não informado</string>
+    <string name="ppp_default_sector">Geral</string>
+    <string name="ppp_default_activities">Conforme função</string>
+    <string name="ppp_default_responsible_cpf">00000000000</string>
+    <string name="ppp_document_title_template">PPP - %1$s</string>
+    <string name="ppp_generated_template">PPP gerado offline: %1$s</string>
+    <string name="ppp_error_required_field">Obrigatório</string>
+    <string name="ppp_error_cnpj_invalid_field">CNPJ inválido</string>
+    <string name="ppp_error_message_cnpj_invalid">Informe um CNPJ válido com 14 dígitos</string>
+    <string name="ppp_error_message_employee_required">Informe o nome do trabalhador</string>
+    <string name="ppp_error_message_admission_required">Informe a data de admissão</string>
+    <string name="ppp_error_message_responsible_required">Informe o responsável técnico</string>
+    <string name="ppp_error_generate_before_sign">Gere o PPP antes de assinar</string>
+    <string name="ppp_error_biometric_unavailable">Biometria/credencial não disponível</string>
+    <string name="ppp_signed_by_fallback">Responsável Técnico</string>
+    <string name="ppp_signed_status_template">✅ Assinado por %1$s em %2$s
+Assinatura Eletrônica Avançada — Lei 14.063/2020</string>
+    <string name="ppp_error_generate_before_export">Gere o PPP antes</string>
+    <string name="ppp_export_title">PPP - ANDA</string>
+    <string name="ppp_export_status_template">PDF: %1$s
+Auditoria TXT: %2$s</string>
+    <string name="ppp_error_export_failed">Falha ao exportar</string>
+    <string name="ppp_required_ready">Checklist de preenchimento - pronto</string>
+    <string name="ppp_required_pending_template">Falta preencher: %1$s</string>
+    <string name="ppp_required_label_cnpj">CNPJ válido (14 dígitos)</string>
+    <string name="ppp_required_label_employee">Nome do trabalhador</string>
+    <string name="ppp_required_label_admission">Data de admissão</string>
+    <string name="ppp_required_label_responsible">Responsável técnico</string>
+
+    <!-- Tool cards -->
+    <string name="tool_scanner_title">Scanner C.A.</string>
+    <string name="tool_scanner_desc">Certificado de Aprovação de EPI</string>
+    <string name="tool_docs_title">Documentos</string>
+    <string name="tool_docs_desc">Todos os documentos locais</string>
+    <string name="tool_latest_title">Último Documento</string>
+    <string name="tool_latest_desc">Acessar o documento mais recente</string>
+    <string name="tool_arrow">›</string>
+
+    <!-- CA Scanner -->
+    <string name="scanner_title">📷  Scanner C.A.</string>
+    <string name="scanner_status_waiting_camera">Aguardando camera...</string>
+    <string name="scanner_backend_checking">Backend: verificando...</string>
+    <string name="scanner_request_camera_button">📷  Ativar Camera para Escanear</string>
+    <string name="scanner_result_title">🔍  Resultado do Scan</string>
+    <string name="scanner_result_empty">Nenhum C.A. detectado ainda.</string>
+    <string name="scanner_manual_title">✏️  Entrada Manual</string>
+    <string name="scanner_manual_hint">Ex.: Luva de raspa - C.A. 12345</string>
+    <string name="scanner_manual_analyze_button">Analisar Texto Manual</string>
+    <string name="scanner_open_official_button">🌐  Abrir Consulta Oficial MTE</string>
+    <string name="scanner_status_camera_active">Camera ativa. Posicione o C.A. do EPI no centro.</string>
+    <string name="scanner_status_permission_denied">Permissao negada. Use o fallback manual abaixo.</string>
+    <string name="scanner_status_safe_mode">Modo seguro ativo. Use leitura manual e diagnostico tecnico.</string>
+    <string name="scanner_status_no_camera">Este aparelho nao possui camera disponivel. Use o fallback manual.</string>
+    <string name="scanner_status_ocr_failed">OCR da camera falhou. Tente novamente ou use fallback manual.</string>
+    <string name="scanner_status_start_failed">Falha ao iniciar camera. Use o fallback manual.</string>
+    <string name="scanner_status_manual_not_found">Nenhum C.A. detectado no texto manual.</string>
+    <string name="scanner_status_backend_not_configured">Backend: CA_API_BASE_URL nao configurada</string>
+    <string name="scanner_status_backend_online">Backend: ONLINE</string>
+    <string name="scanner_status_backend_offline">Backend: OFFLINE (fallback ativo)</string>
+    <string name="scanner_status_checking_ca">Consultando C.A. %1$s...</string>
+    <string name="scanner_result_template">Origem: %1$s
+Fonte de validacao: %2$s
+C.A.: %3$s
+Item: %4$s
+Cobertura: %5$s
+Validade: %6$s
+%7$sStatus: %8$s</string>
+    <string name="scanner_result_observation_template">Observacao: %1$s
+</string>
+    <string name="scanner_status_valid_template">C.A. valido detectado (%1$s).</string>
+    <string name="scanner_status_invalid_template">Atencao: C.A. invalido/nao encontrado (%1$s).%2$s</string>
+    <string name="scanner_status_reason_suffix_template"> %1$s.</string>
+    <string name="scanner_status_valid">VALIDO</string>
+    <string name="scanner_status_invalid">INVALIDO/NAO ENCONTRADO</string>
+    <string name="scanner_origin_camera">Camera</string>
+    <string name="scanner_origin_manual">Manual</string>
+    <string name="scanner_safe_mode_camera_disabled">Modo seguro ativo: camera temporariamente desativada</string>
+    <string name="scanner_configure_official_url">Configure CA_OFFICIAL_CONSULT_URL para habilitar consulta oficial.</string>
+    <string name="scanner_opening_official_consult">Abrindo a consulta oficial para confirmar o C.A.</string>
+    <string name="scanner_open_official_failed">Nao foi possivel abrir a consulta oficial.</string>
+    <string name="scanner_reason_expired">C.A. com indicio de vencimento</string>
+    <string name="scanner_reason_not_found">Nao localizado no retorno online/local</string>
+    <string name="scanner_reason_upstream_unavailable">Fonte online indisponivel no momento</string>
+
+    <!-- ── LGPD Onboarding ──────────────────────────────────────── -->
+    <string name="lgpd_tagline">Segurança e Medicina do Trabalho</string>
+    <string name="lgpd_card_title">Como protegemos seus dados</string>
+    <string name="lgpd_point1_icon">🔒</string>
+    <string name="lgpd_point1_text">Dados criptografados somente no seu aparelho</string>
+    <string name="lgpd_point2_icon">📱</string>
+    <string name="lgpd_point2_text">100% offline — sem envio a servidores de terceiros</string>
+    <string name="lgpd_point3_icon">✍️</string>
+    <string name="lgpd_point3_text">Assinatura eletronica local protegida por PIN/biometria</string>
+    <string name="lgpd_point4_icon">🇧🇷</string>
+    <string name="lgpd_point4_text">Conformidade total com LGPD (Lei 13.709/2018)</string>
+    <string name="lgpd_show_policy_link">Ler Política de Privacidade completa →</string>
+    <string name="lgpd_accept_button">Aceitar e Usar o ANDA</string>
+    <string name="lgpd_consent_note">Ao aceitar, você concorda com nossos Termos de Uso e Política de Privacidade.</string>
+    <string name="lgpd_refuse_link">Recusar e sair</string>
+    <string name="lgpd_full_policy_title">Política de Privacidade</string>
+    <string name="lgpd_full_policy_close">Fechar</string>
+
+    <!-- Profile and local auth -->
+    <string name="profile_selection_title">Selecione seu perfil</string>
+    <string name="profile_selection_subtitle">Personalizamos a experiencia com base no seu tipo de operacao SST</string>
+    <string name="profile_technician_title">Tecnico SST</string>
+    <string name="profile_technician_desc">Para consultores, tecnicos de seguranca e responsaveis operacionais.</string>
+    <string name="profile_company_title">Prestadora/Clinica</string>
+    <string name="profile_company_desc">Para empresas prestadoras e clinicas ocupacionais que produzem documentos SST.</string>
+    <string name="profile_clinic_title">Prestadora/Clinica</string>
+    <string name="profile_clinic_desc">Perfil unificado para operacao medica e tecnica SST.</string>
+    <string name="profile_prestadora_title">Prestadora/Clinica</string>
+
+    <string name="profile_setup_title">Configure seu PIN</string>
+    <string name="profile_setup_subtitle">Este PIN local protege o acesso aos dados no aparelho</string>
+    <string name="profile_setup_selected_profile_default">Perfil selecionado</string>
+    <string name="profile_setup_selected_profile_template">Perfil: %1$s</string>
+    <string name="profile_setup_pin_hint">PIN de 6 digitos</string>
+    <string name="profile_setup_pin_confirm_hint">Confirmar PIN</string>
+    <string name="profile_setup_continue_button">Salvar e continuar</string>
+    <string name="profile_setup_biometric_opt_in_title">Ativar biometria?</string>
+    <string name="profile_setup_biometric_opt_in_message">Voce pode entrar mais rapido usando biometria neste aparelho. O PIN continua como metodo principal de seguranca.</string>
+    <string name="profile_setup_biometric_opt_in_enable">Ativar biometria</string>
+    <string name="profile_setup_biometric_opt_in_skip">Agora nao</string>
+    <string name="profile_pin_invalid_length">Use exatamente 6 digitos numericos</string>
+    <string name="profile_pin_mismatch">Os PINs nao conferem</string>
+    <string name="profile_pin_save_error">Nao foi possivel salvar o PIN</string>
+
+    <string name="profile_unlock_title">Desbloquear ANDA</string>
+    <string name="profile_unlock_subtitle">Digite seu PIN local para continuar</string>
+    <string name="profile_unlock_profile_default">Perfil ativo</string>
+    <string name="profile_unlock_profile_template">Perfil atual: %1$s</string>
+    <string name="profile_unlock_pin_hint">PIN de acesso</string>
+    <string name="profile_unlock_button">Desbloquear</string>
+    <string name="profile_unlock_biometric_button">Usar biometria do aparelho</string>
+    <string name="profile_unlock_switch_profile_button">Trocar perfil neste aparelho</string>
+    <string name="profile_unlock_invalid_pin">PIN invalido</string>
+    <string name="profile_unlock_status_default">Aguardando desbloqueio</string>
+    <string name="profile_unlock_status_biometric_enabled">Use PIN ou biometria para desbloquear.</string>
+    <string name="profile_unlock_status_pin_only">Use seu PIN para desbloquear. Voce pode ativar biometria nas configuracoes.</string>
+    <string name="profile_unlock_locked_template">Acesso temporariamente bloqueado. Tente novamente em %1$s.</string>
+    <string name="profile_unlock_biometric_unavailable">Biometria indisponivel neste aparelho</string>
+    <string name="profile_unlock_biometric_title">Desbloquear ANDA</string>
+    <string name="profile_unlock_biometric_subtitle">Confirme sua identidade para entrar</string>
+    <string name="profile_unlock_biometric_description">Use biometria ou credencial do dispositivo.</string>
+    <string name="profile_unlock_biometric_failed">Falha na autenticacao biometrica</string>
+
+    <!-- Session -->
+    <string name="session_timeout_message">Sessao expirada por inatividade. Digite seu PIN para continuar.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Configuracoes</string>
+    <string name="settings_subtitle">Perfil, seguranca e preferencias do ANDA</string>
+    <string name="settings_section_profile">Perfil</string>
+    <string name="settings_section_security">Seguranca</string>
+    <string name="settings_section_danger">Zona de risco</string>
+    <string name="settings_profile_placeholder">Perfil ativo</string>
+    <string name="settings_display_name_hint">Nome de exibicao (opcional)</string>
+    <string name="settings_save_name_button">Salvar nome</string>
+    <string name="settings_name_saved">Nome atualizado</string>
+    <string name="settings_biometric_toggle_title">Usar biometria para desbloquear</string>
+    <string name="settings_biometric_toggle_desc">Permite desbloqueio rapido com digital ou rosto</string>
+    <string name="settings_biometric_enabled_toast">Biometria ativada</string>
+    <string name="settings_biometric_disabled_toast">Biometria desativada. Use somente o PIN.</string>
+    <string name="settings_change_pin_button">Alterar PIN</string>
+    <string name="settings_change_pin_cancel_label">Cancelar alteracao de PIN</string>
+    <string name="settings_current_pin_hint">PIN atual</string>
+    <string name="settings_new_pin_hint">Novo PIN</string>
+    <string name="settings_confirm_new_pin_hint">Confirmar novo PIN</string>
+    <string name="settings_confirm_pin_change_button">Confirmar</string>
+    <string name="settings_cancel_button">Cancelar</string>
+    <string name="settings_pin_current_wrong">PIN atual incorreto</string>
+    <string name="settings_pin_changed_toast">PIN alterado com sucesso</string>
+    <string name="settings_danger_desc">Esta acao apaga todas as configuracoes locais do perfil, incluindo PIN e dados de sessao.</string>
+    <string name="settings_switch_profile_button">Trocar perfil e apagar dados locais</string>
+    <string name="settings_switch_profile_confirm_title">Confirmar troca de perfil</string>
+    <string name="settings_switch_profile_confirm_message">Todos os dados locais de perfil e PIN serao apagados. Esta acao nao pode ser desfeita.</string>
+    <string name="settings_switch_profile_confirm_ok">Confirmar e apagar</string>
+
+    <!-- Home commons -->
+    <string name="home_ops_loading">Carregando estatisticas…</string>
+    <string name="home_welcome_name_template">Ola, %1$s</string>
+
+    <!-- Technician home -->
+    <string name="technician_home_title">ANDA Técnico SST</string>
+    <string name="technician_home_subtitle">Plataforma completa de documentação SST</string>
+    <string name="technician_home_open_aso">🩺  ASO — Atestado de Saude Ocupacional</string>
+    <string name="technician_home_open_pcmso">📋  PCMSO — Controle Medico Ocupacional</string>
+    <string name="technician_home_open_ppp">👤  PPP — Perfil Profissiografico</string>
+    <string name="technician_home_open_resgate">🚨  Plano de Resgate</string>
+    <string name="technician_home_open_pgrtr">📑  PGRTR — Gerenciamento de Riscos Especifico</string>
+    <string name="technician_home_open_inventario">📦  Inventario de Riscos (NR-01 GRO/PGR)</string>
+    <string name="technician_home_open_my_requests">📨  Minhas solicitações</string>
+    <string name="manifest_label_technician_home">Home Tecnico SST</string>
+
+    <!-- Company home -->
+    <string name="company_home_title">ANDA Prestadora/Clinica</string>
+    <string name="company_home_subtitle">Operacao SST com controle de equipe, documentos e produtividade</string>
+    <string name="company_home_open_pgr">🛡️  PGR — Gerenciamento de Riscos</string>
+    <string name="company_home_open_apr">🔍  APR — Analise Preliminar de Risco</string>
+    <string name="company_home_open_cat">⚠️  CAT — Acidente do Trabalho</string>
+    <string name="company_home_open_os">📝  OS — Ordem de Servico (NR-01)</string>
+    <string name="company_home_open_scanner">📷  Scanner de C.A.</string>
+    <string name="company_home_open_documents">🗂️  Documentos locais</string>
+    <string name="company_home_open_service_requests">📨  Solicitações de Serviço</string>
+    <string name="company_home_open_epi">🦺  Gestao de EPI</string>
+    <string name="company_home_open_employees">👤  Funcionarios</string>
+    <string name="company_home_open_nr10">⚡  Laudo NR-10 — Eletrica</string>
+    <string name="company_home_open_nr12">⚙️  Laudo NR-12 — Maquinas</string>
+    <string name="company_home_open_nr20">🔥  Laudo NR-20 — Inflamaveis</string>
+    <string name="company_home_open_ltcat">📊  LTCAT — Condicoes Ambientais</string>
+    <string name="company_home_open_aet">🖥️  AET — Analise Ergonomica</string>
+    <string name="company_home_open_insalubridade">☣️  Laudo de Insalubridade (NR-15)</string>
+    <string name="company_home_open_periculosidade">⚠️  Laudo de Periculosidade (NR-16)</string>
+    <string name="company_home_open_pt">🔐  PT — Permissao de Trabalho</string>
+    <string name="company_home_open_pca">👂  PCA — Conservacao Auditiva</string>
+    <string name="company_home_open_ppr">😷  PPR — Protecao Respiratoria</string>
+    <string name="company_home_open_plano_acao">📋  Plano de Acao SST</string>
+    <string name="company_home_section_docs">DOCUMENTOS SST</string>
+    <string name="company_home_section_nr">LAUDOS E AUDITORIAS NR</string>
+    <string name="company_home_section_specialized">LAUDOS ESPECIALIZADOS</string>
+    <string name="company_home_section_programs">PROGRAMAS SST</string>
+    <string name="company_home_section_tools">FERRAMENTAS</string>
+    <string name="company_home_lock_button">🔒  Bloquear app</string>
+
+    <!-- Clinic home -->
+    <string name="clinic_home_title">ANDA Clinica</string>
+    <string name="clinic_home_subtitle">Atalhos para medicina ocupacional</string>
+    <string name="clinic_home_open_aso">🩺  ASO — Atestado de Saude Ocupacional</string>
+    <string name="clinic_home_open_pcmso">📋  PCMSO — Controle Medico Ocupacional</string>
+    <string name="clinic_home_open_ppp">👤  PPP — Perfil Profissiografico</string>
+    <string name="clinic_home_open_aet">🖥️  AET — Analise Ergonomica</string>
+    <string name="clinic_home_open_ltcat">📊  LTCAT — Condicoes Ambientais</string>
+    <string name="clinic_home_open_scanner">📷  Scanner de C.A.</string>
+    <string name="clinic_home_open_epi">🦺  Gestao de EPI</string>
+    <string name="clinic_home_open_employees">👤  Funcionarios</string>
+    <string name="clinic_home_open_documents">🗂️  Documentos locais</string>
+    <string name="clinic_home_section_medicina">MEDICINA DO TRABALHO</string>
+    <string name="clinic_home_section_analises">ANALISES E LAUDOS</string>
+    <string name="clinic_home_section_tools">FERRAMENTAS</string>
+    <string name="clinic_home_lock_button">🔒  Bloquear app</string>
+
+    <!-- Emoji icons extracted from activity_main.xml -->
+    <string name="icon_aso">🩺</string>
+    <string name="icon_pcmso">📋</string>
+    <string name="icon_pgr">🛡️</string>
+    <string name="icon_apr">🔍</string>
+    <string name="icon_os">📝</string>
+    <string name="icon_cat">⚠️</string>
+    <string name="icon_ppp">👤</string>
+    <string name="icon_scanner">📷</string>
+    <string name="icon_documents">🗂️</string>
+    <string name="icon_epi">🦺</string>
+    <string name="icon_latest">🕐</string>
+
+    <!-- EPI management card (was hardcoded in layout) -->
+    <string name="home_epi_title">Gestão de EPI</string>
+    <string name="home_epi_desc">C.A., conformidade e validade</string>
+
+    <!-- Advanced-document chip / button labels -->
+    <string name="chip_aet">AET</string>
+    <string name="chip_ltcat">LTCAT</string>
+    <string name="chip_inventario">Inventário</string>
+    <string name="chip_mapa_nr5">Mapa NR-5</string>
+    <string name="chip_laudo_nr10">Laudo NR-10</string>
+    <string name="chip_laudo_nr12">Laudo NR-12</string>
+    <string name="chip_laudo_nr20">Laudo NR-20</string>
+    <string name="chip_pca">PCA</string>
+    <string name="chip_ppr">PPR</string>
+    <string name="chip_pt">PT</string>
+    <string name="chip_insalubridade">Insalubridade</string>
+    <string name="chip_periculosidade">Periculosidade</string>
+    <string name="chip_resgate">Resgate</string>
+    <string name="chip_plano_acao">Plano de Ação</string>
+    <string name="chip_pgrtr">PGRTR</string>
+
+    <!-- Profile selection card icons -->
+    <string name="profile_technician_icon">🦺</string>
+    <string name="profile_company_icon">🏢</string>
+    <string name="profile_clinic_icon">🏥</string>
+
+    <!-- Settings — About section -->
+    <string name="settings_section_about">Sobre o ANDA</string>
+    <string name="settings_about_version_label">Versão do aplicativo</string>
+    <string name="settings_about_legal_title">Aviso Legal</string>
+    <string name="settings_about_legal_body">Este aplicativo é uma ferramenta de apoio. Consulte sempre profissionais habilitados em SST para decisões técnicas e legais.</string>
+    <string name="settings_about_privacy_button">Política de Privacidade e LGPD</string>
+    <string name="settings_about_version_placeholder">—</string>
+
+    <!-- Manifest activity labels -->
+    <string name="manifest_label_document_detail">Detalhe documento</string>
+    <string name="manifest_label_generic_sst_document">Documento SST</string>
+    <string name="manifest_label_documents">Documentos</string>
+    <string name="manifest_label_diagnostics">Diagnostico</string>
+    <string name="manifest_label_aso">ASO</string>
+    <string name="manifest_label_scanner_ca">Scanner C.A.</string>
+    <string name="manifest_label_pgr">PGR</string>
+    <string name="manifest_label_cat">CAT</string>
+    <string name="manifest_label_apr">APR</string>
+    <string name="manifest_label_pcmso">PCMSO</string>
+    <string name="manifest_label_os">OS</string>
+    <string name="manifest_label_ppp">PPP</string>
+    <string name="manifest_label_epi_management">Gestão de EPI</string>
+    <string name="manifest_label_company_home">Home Prestadora/Clinica</string>
+    <string name="manifest_label_clinic_home">Home Clinica (legado)</string>
+    <string name="manifest_label_pin_unlock">Desbloquear</string>
+    <string name="manifest_label_pin_setup">Configurar PIN</string>
+    <string name="manifest_label_profile_selection">Selecionar perfil</string>
+    <string name="manifest_label_employee_management">Funcionários</string>
+    <string name="manifest_label_service_requests">Solicitações</string>
+
+    <!-- Service requests (contratante -> prestadora) -->
+    <string name="service_request_title">📨 Solicitações de Serviço</string>
+    <string name="service_request_subtitle">Capte demandas, distribua para equipe aprovada e acompanhe execução</string>
+    <string name="service_request_count_placeholder">Solicitações: —</string>
+    <string name="service_request_count_template">Solicitações: %1$d</string>
+    <string name="service_request_form_title">Nova solicitação</string>
+    <string name="service_request_hint_name">Contratante / empresa solicitante</string>
+    <string name="service_request_hint_cnpj">CNPJ do contratante (14 dígitos)</string>
+    <string name="service_request_hint_document">Documento solicitado (ASO, PGR, LTCAT, etc.)</string>
+    <string name="service_request_hint_whatsapp">WhatsApp do contato (opcional)</string>
+    <string name="service_request_prefer_whatsapp">Preferir contato por WhatsApp</string>
+    <string name="service_request_hint_notes">Observações da solicitação (opcional)</string>
+    <string name="service_request_save_button">Salvar solicitação</string>
+    <string name="service_request_refresh_button">Atualizar lista</string>
+    <string name="service_request_open_document_button">Abrir documento</string>
+    <string name="service_request_open_linked_button">Abrir vinculado</string>
+    <string name="service_request_linked_status_template">Solicitação vinculada: %1$s</string>
+    <string name="service_request_placeholder_code">REQ-000</string>
+    <string name="service_request_placeholder_contractor">Contratante</string>
+    <string name="service_request_placeholder_document">Documento</string>
+    <string name="service_request_placeholder_status">Status</string>
+    <string name="service_request_placeholder_assignee">Responsável</string>
+    <string name="service_request_placeholder_contact">Contato</string>
+    <string name="service_request_placeholder_updated">Atualização</string>
+    <string name="service_request_placeholder_linked">Documento vinculado</string>
+    <string name="service_request_placeholder_ops">Status operacional</string>
+    <string name="service_request_empty">Nenhuma solicitação registrada.</string>
+    <string name="service_request_error_name_required">Informe o nome do contratante.</string>
+    <string name="service_request_error_cnpj_invalid">Informe um CNPJ válido com 14 dígitos.</string>
+    <string name="service_request_error_doc_required">Informe o documento solicitado.</string>
+    <string name="service_request_saved">Solicitação registrada com sucesso.</string>
+    <string name="service_request_status_open">Status: Aberta</string>
+    <string name="service_request_status_assigned">Status: Atribuída</string>
+    <string name="service_request_status_in_progress">Status: Em execução</string>
+    <string name="service_request_status_done">Status: Concluída</string>
+    <string name="service_request_doc_template">Documento: %1$s</string>
+    <string name="service_request_assignee_unassigned">Responsável: não atribuído</string>
+    <string name="service_request_assignee_template">Responsável: %1$s</string>
+    <string name="service_request_contact_app">Contato: pelo app ANDA</string>
+    <string name="service_request_contact_whatsapp_template">Contato: WhatsApp %1$s</string>
+    <string name="service_request_contact_whatsapp_missing">Contato: WhatsApp pendente</string>
+    <string name="service_request_updated_template">Atualizado em %1$s</string>
+    <string name="service_request_link_none">Documento vinculado: nenhum ainda</string>
+    <string name="service_request_link_template">Documento vinculado: %1$s · %2$s</string>
+    <string name="service_request_ops_draft">Status operacional: rascunho salvo</string>
+    <string name="service_request_ops_signed">Status operacional: assinado localmente</string>
+    <string name="service_request_ops_pdf">Status operacional: PDF exportado</string>
+    <string name="service_request_ops_synced">Status operacional: sincronizado</string>
+    <string name="service_request_ops_signed_pdf">Status operacional: assinado + PDF pronto</string>
+    <string name="service_request_ops_latest_template">Última ação: %1$s</string>
+    <string name="service_request_open_linked_unavailable">Ainda não há documento vinculado para abrir.</string>
+    <string name="service_request_link_badge_linked">Com vínculo</string>
+    <string name="service_request_link_badge_unlinked">Sem vínculo</string>
+    <string name="service_request_assign_button">Atribuir</string>
+    <string name="service_request_progress_button">Iniciar</string>
+    <string name="service_request_done_button">Concluir</string>
+    <string name="service_request_whatsapp_button">Abrir contato no WhatsApp</string>
+    <string name="service_request_view_details_button">Ver detalhes</string>
+    <string name="service_request_assign_no_eligible">Nenhum colaborador elegível (interno ou freelancer aprovado).</string>
+    <string name="service_request_assign_picker_title">Selecione o responsável pela solicitação</string>
+    <string name="service_request_assign_success">Solicitação atribuída para %1$s.</string>
+    <string name="service_request_assign_first">Atribua um responsável antes de iniciar.</string>
+    <string name="service_request_whatsapp_missing">WhatsApp não cadastrado nesta solicitação.</string>
+    <string name="service_request_whatsapp_not_available">Não foi possível abrir o WhatsApp neste aparelho.</string>
+    <string name="service_request_whatsapp_message_template">Olá! Atualização da solicitação %1$s no ANDA.</string>
+    <string name="service_request_filter_all">Todas</string>
+    <string name="service_request_filter_open">Abertas</string>
+    <string name="service_request_filter_active">Ativas</string>
+    <string name="service_request_sort_updated">Ordenação: mais recentes</string>
+    <string name="service_request_sort_latest_action">Ordenação: última ação operacional</string>
+    <string name="service_request_filter_cnpj_hint">Filtrar por CNPJ do contratante (opcional)</string>
+    <string name="service_request_technician_empty_name">Defina seu nome em Configurações para ver solicitações atribuídas.</string>
+    <string name="service_request_assignment_notification_channel">Atribuições ANDA</string>
+    <string name="service_request_assignment_notification_title">Solicitação atribuída</string>
+    <string name="service_request_assignment_notification_body">%1$s foi atribuída para %2$s.</string>
+    <string name="service_request_detail_title">Detalhe da solicitação</string>
+    <string name="service_request_detail_open_flow">Abrir fluxo do documento</string>
+    <string name="service_request_detail_open_linked">Abrir documento vinculado</string>
+    <string name="service_request_detail_refresh">Atualizar detalhe</string>
+    <string name="service_request_detail_empty_linked">Nenhum documento vinculado a esta solicitação ainda.</string>
+    <string name="service_request_detail_not_found">Solicitação não encontrada.</string>
+    <string name="service_request_detail_no_notes">Sem observações livres.</string>
+    <string name="service_request_detail_no_history">Sem histórico operacional ainda.</string>
+    <string name="service_request_section_linked_document">Documento vinculado</string>
+    <string name="service_request_section_history">Histórico operacional</string>
+    <string name="service_request_section_notes">Observações livres</string>
+    <string name="service_request_detail_summary_template">Código: %1$s
+Contratante: %2$s
+CNPJ: %3$s
+Documento solicitado: %4$s
+Status: %5$s
+Responsável: %6$s
+Contato: %7$s
+Atualizado em: %8$s
+
+Observações:
+%9$s</string>
+    <string name="service_request_detail_linked_template">Último vínculo:
+ID: %1$s
+Tipo: %2$s
+Operacional: %3$s
+Assinatura: %4$s
+Sincronização: %5$s</string>
+    <string name="service_request_detail_signed_yes">assinado</string>
+    <string name="service_request_detail_signed_no">não assinado</string>
+    <string name="service_request_detail_synced_yes">sincronizado</string>
+    <string name="service_request_detail_synced_no">pendente de sync</string>
+    <string name="manifest_label_service_request_detail">Detalhe da solicitação</string>
+
+    <!-- ── Employee Management ─────────────────────────────────────────── -->
+    <string name="emp_header_title">👤  Funcionários</string>
+    <string name="emp_header_subtitle">Cadastro local de trabalhadores para autofill em ASO/OS</string>
+    <string name="emp_count_placeholder">Funcionários cadastrados: —</string>
+    <string name="emp_count_template">Funcionários cadastrados: %1$d</string>
+    <string name="emp_search_hint">Buscar por nome ou CPF</string>
+    <string name="emp_cnpj_filter_hint">Filtrar por CNPJ da empresa (opcional)</string>
+    <string name="emp_add_button">+ Adicionar Funcionário</string>
+    <string name="emp_form_title">➕  Novo Funcionário</string>
+    <string name="emp_hint_cpf">CPF (11 dígitos, somente números)</string>
+    <string name="emp_hint_name">Nome completo</string>
+    <string name="emp_hint_birth_date">Data de nascimento (dd/MM/aaaa)</string>
+    <string name="emp_hint_role">Cargo / função (opcional)</string>
+    <string name="emp_freelancer_checkbox">Colaborador freelancer (externo)</string>
+    <string name="emp_approved_checkbox">Aprovado pela prestadora para executar serviços</string>
+    <string name="emp_hint_company_cnpj">CNPJ da empresa (opcional)</string>
+    <string name="emp_hint_company_name">Razão social da empresa (opcional)</string>
+    <string name="emp_hint_notes">Restrições ou observações (opcional)</string>
+    <string name="emp_save_button">Salvar Funcionário</string>
+    <string name="emp_cancel_button">Cancelar</string>
+    <string name="emp_list_header">FUNCIONÁRIOS CADASTRADOS</string>
+    <string name="emp_empty_placeholder">Nenhum funcionário cadastrado ainda.\nClique em + Adicionar Funcionário para começar.</string>
+    <string name="emp_saved_toast">Funcionário salvo com sucesso</string>
+    <string name="emp_deleted_toast">Funcionário removido</string>
+    <string name="emp_error_cpf">CPF inválido — informe 11 dígitos</string>
+    <string name="emp_error_name">Nome obrigatório</string>
+    <string name="emp_role_unspecified">Cargo não informado</string>
+    <string name="emp_approval_source_prestadora">Aprovacao prestadora</string>
+    <string name="emp_collab_internal">Equipe interna da prestadora</string>
+    <string name="emp_collab_freelancer_approved">Freelancer aprovado para execução</string>
+    <string name="emp_collab_freelancer_pending">Freelancer pendente de aprovação</string>
+    <string name="emp_pick_requires_approval">Freelancer pendente: aprovação obrigatória da prestadora.</string>
+    <string name="emp_aso_expired">⚠ ASO VENCIDO</string>
+    <string name="emp_aso_expiring_template">⚠ ASO vence em %1$d dia(s)</string>
+    <string name="emp_aso_valid_template">✅ ASO válido até %1$s</string>
+    <string name="emp_pick_mode_title">Selecionar Funcionário</string>
+    <string name="emp_pick_mode_hint">TOQUE NO FUNCIONÁRIO PARA SELECIONAR</string>
+
+    <!-- Employee management shortcut on home screens -->
+    <string name="home_open_employees">👤  Funcionários</string>
+    <string name="home_employees_desc">Cadastro local · autofill em formulários</string>
+    <string name="aso_pick_employee_button">🔍 Buscar funcionário salvo</string>
+    <string name="aso_pick_company_button">🏢 Selecionar empresa salva</string>
+    <string name="aso_lookup_company_selected_local">Empresa local selecionada</string>
+    <string name="aso_lookup_employee_company_applied">Empresa do funcionário aplicada ao formulário</string>
+    <!-- Generic company picker (shared across CAT, OS, PCMSO, PGR, APR, PPP) -->
+    <string name="doc_pick_company_button">🏢 Selecionar empresa salva</string>
+    <string name="doc_pick_company_selected_local">Empresa local selecionada</string>
+    <!-- Generic employee picker (shared across CAT, OS, PPP) -->
+    <string name="doc_pick_employee_button">🔍 Buscar funcionário salvo</string>
+    <string name="doc_pick_employee_selected_local">Funcionário local selecionado</string>
+
+    <!-- ASO conclusion / result section -->
+    <string name="aso_conclusion_section_title">✅  Conclusão / Aptidão</string>
+    <string name="aso_result_apt">APTO</string>
+    <string name="aso_result_inapt">INAPTO</string>
+    <string name="aso_result_inapt_temp">INAPTO TEMPORÁRIO</string>
+    <string name="aso_hint_restrictions">Restrições / condicionamentos (opcional)</string>
+    <string name="aso_hint_complementary_exams">Exames complementares solicitados (opcional)</string>
+    <string name="aso_hint_observations">Observações adicionais (opcional)</string>
+    <string name="aso_required_label_conclusion">Conclusão (APT/INAPTO)</string>
+    <string name="aso_error_conclusion_required_field">Conclusão obrigatória</string>
+    <string name="aso_error_conclusion_required_message">Selecione APT, INAPTO ou INAPTO TEMPORÁRIO</string>
+
+    <!-- Company management -->
+    <string name="company_mgmt_header_title">🏢  Empresas</string>
+    <string name="company_mgmt_header_subtitle">Cadastro local de empresas para autofill em documentos</string>
+    <string name="company_mgmt_count_placeholder">Empresas cadastradas: —</string>
+    <string name="company_mgmt_count_template">Empresas cadastradas: %1$d</string>
+    <string name="company_mgmt_search_hint">Buscar por razão social ou CNPJ</string>
+    <string name="company_mgmt_add_button">+ Adicionar Empresa</string>
+    <string name="company_mgmt_form_title">➕  Nova Empresa</string>
+    <string name="company_mgmt_hint_cnpj">CNPJ (14 dígitos, somente números)</string>
+    <string name="company_mgmt_lookup_button">🔍 Consultar CNPJ (BrasilAPI)</string>
+    <string name="company_mgmt_hint_legal_name">Razão Social</string>
+    <string name="company_mgmt_hint_trade_name">Nome Fantasia (opcional)</string>
+    <string name="company_mgmt_hint_cnae">CNAE fiscal</string>
+    <string name="company_mgmt_hint_city">Município</string>
+    <string name="company_mgmt_hint_state">UF</string>
+    <string name="company_mgmt_hint_contact_whatsapp">WhatsApp operacional (opcional)</string>
+    <string name="company_mgmt_prefer_whatsapp_checkbox">Preferir contato por WhatsApp para solicitações</string>
+    <string name="company_mgmt_cancel_button">Cancelar</string>
+    <string name="company_mgmt_save_button">Salvar Empresa</string>
+    <string name="company_mgmt_list_header">EMPRESAS CADASTRADAS</string>
+    <string name="company_mgmt_empty_placeholder">Nenhuma empresa cadastrada ainda.\nClique em + Adicionar Empresa ou consulte um CNPJ.</string>
+    <string name="company_mgmt_saved_toast">Empresa salva com sucesso</string>
+    <string name="company_mgmt_deleted_toast">Empresa removida</string>
+    <string name="company_mgmt_contact_app_only">Contato operacional: pelo app ANDA</string>
+    <string name="company_mgmt_contact_whatsapp_template">Contato operacional: WhatsApp %1$s</string>
+    <string name="company_mgmt_contact_whatsapp_missing">Contato operacional: WhatsApp pendente de cadastro</string>
+    <string name="company_mgmt_cnpj_invalid">CNPJ deve ter 14 dígitos</string>
+    <string name="company_mgmt_legal_name_required">Informe a Razão Social</string>
+    <string name="company_mgmt_lookup_success">%1$s — Grau de risco: %2$d</string>
+    <string name="company_mgmt_lookup_error">Falha na consulta: %1$s</string>
+    <string name="company_mgmt_pick_mode_title">Selecionar Empresa</string>
+    <string name="company_mgmt_pick_mode_hint">TOQUE NA EMPRESA PARA SELECIONAR</string>
+    <string name="company_delete_button">Remover empresa</string>
+
+    <!-- Company management shortcut on home screens -->
+    <string name="home_open_companies">🏢  Empresas</string>
+    <string name="manifest_label_company_management">Empresas</string>
+
+    <!-- LGPD Consent: Crashlytics opt-in dialog -->
+    <string name="consent_crashlytics_title">Melhorar Estabilidade da Anda?</string>
+    <string name="consent_crashlytics_description">Seu consentimento ajuda a encontrar e corrigir problemas.\n\nOs relatórios de erro contêm:\n• Mensagens de erro (PII redatado)\n• Modelo do dispositivo, versão do SO\n• Timestamp do erro\n\nO que NÃO é coletado:\n✗ Seu nome, email, CPF ou CNPJ\n✗ Conteúdo de documentos\n✗ Senhas ou dados pessoais\n\nVocê pode mudar de ideia a qualquer momento nas Configurações.</string>
+    <string name="consent_crashlytics_checkbox_label">Sim, enviar relatórios de erro anônimos para melhorar a Anda</string>
+    <string name="consent_crashlytics_legal_notice">Sua privacidade é protegida conforme a Lei 13.709/2018 (LGPD).</string>
+    <string name="consent_button_later">Decidir depois</string>
+
+    <!-- Settings: Crashlytics consent toggle -->
+    <string name="settings_crashlytics_title">Relatórios de Erro</string>
+    <string name="settings_crashlytics_description">Ajudar a encontrar problemas</string>
+    <string name="settings_crashlytics_enabled_toast">Relatórios de erro ativados</string>
+    <string name="settings_crashlytics_disabled_toast">Relatórios de erro desativados</string>
+
+    <!-- Analytics Dashboard -->
+    <string name="manifest_label_analytics">Dashboard de Produtividade</string>
+    <string name="analytics_title">Dashboard de Produtividade</string>
+    <string name="analytics_period_label">Período:</string>
+    <string name="analytics_last_week">Últimos 7 dias</string>
+    <string name="analytics_last_month">Últimos 30 dias</string>
+    <string name="analytics_last_quarter">Últimos 90 dias</string>
+    <string name="analytics_refresh">Atualizar</string>
+    <string name="analytics_productivity_title">Produtividade</string>
+    <string name="analytics_documents_created">Documentos criados:</string>
+    <string name="analytics_avg_time_per_doc">Tempo médio/doc:</string>
+    <string name="analytics_period_template">Últimos %1$d dias</string>
+    <string name="analytics_revenue_title">Faturamento</string>
+    <string name="analytics_total_revenue">Total:</string>
+    <string name="analytics_empty_state">Nenhum dado disponível para este período</string>
+</resources>
+
+
