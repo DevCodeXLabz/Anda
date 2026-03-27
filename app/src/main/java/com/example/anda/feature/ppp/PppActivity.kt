@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.anda.R
+import com.example.anda.data.integration.ServiceIntegrationHelper
 import com.example.anda.core.stability.CrashShield
 import com.example.anda.core.stability.safeLaunch
 import com.example.anda.data.local.entity.DocumentEntity
@@ -43,6 +44,8 @@ class PppActivity : AppCompatActivity() {
     private var isOperationInProgress = false
     private var lastPrefilledCnpj: String? = null
     private var sourceRequestCode: String? = null
+    private lateinit var integrationHelper: ServiceIntegrationHelper
+    private var currentCompanyScope: String? = null
 
     private val pickCompanyLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -55,8 +58,22 @@ class PppActivity : AppCompatActivity() {
             if (cnpj.isNotBlank()) binding.pppCnpjInput.setText(cnpj)
             if (name.isNotBlank()) binding.pppCompanyNameInput.setText(name)
             if (cnae.isNotBlank()) binding.pppCnaeInput.setText(cnae)
+            // Track and publish company selection
+            val cleanCnpj = cnpj.filter(Char::isDigit)
+            currentCompanyScope = cleanCnpj
+            if (cleanCnpj.isNotBlank()) {
+                val companyFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to cnpj,
+                    ServiceIntegrationHelper.FieldIds.COMPANY_NAME to name
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = companyFields,
+                    sourceDocument = "PPP",
+                    companyScope = cleanCnpj
+                )
+            }
             binding.pppCnpjStatusText.text = getString(R.string.doc_pick_company_selected_local)
-            preloadLegalContext(cnpj.filter(Char::isDigit))
+            preloadLegalContext(cleanCnpj)
         }
     }
 
@@ -78,6 +95,20 @@ class PppActivity : AppCompatActivity() {
                 binding.pppCnpjInput.setText(empCnpj)
                 binding.pppCompanyNameInput.setText(empComp)
             }
+            // Publish employee selection to autofill (scoped to employee company if available)
+            val empScope = empCnpj.filter { it.isDigit() }.ifBlank { currentCompanyScope }
+            if (!empScope.isNullOrBlank()) {
+                val employeeFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.EMPLOYEE_NAME to name,
+                    ServiceIntegrationHelper.FieldIds.EMPLOYEE_CPF to cpf,
+                    ServiceIntegrationHelper.FieldIds.EMPLOYEE_DEPARTMENT to role
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = employeeFields,
+                    sourceDocument = "PPP",
+                    companyScope = empScope
+                )
+            }
         }
     }
 
@@ -85,6 +116,8 @@ class PppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // Initialize SmartAutofill integration helper
+        integrationHelper = ServiceIntegrationHelper(this, lifecycleScope)
         DocumentLocalRepository.initialize(this)
         SstRepository.initialize(this)
         applyRequestContextFromIntent()
@@ -176,6 +209,20 @@ class PppActivity : AppCompatActivity() {
             showToast(validationMessageFor(missingFields.first()))
             return
         }
+
+        // Publish form data to autofill system before generation
+        val formData = mapOf(
+            ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to cnpj,
+            ServiceIntegrationHelper.FieldIds.COMPANY_NAME to companyName,
+            ServiceIntegrationHelper.FieldIds.EMPLOYEE_CPF to employeeCpf,
+            ServiceIntegrationHelper.FieldIds.EMPLOYEE_NAME to employee,
+            ServiceIntegrationHelper.FieldIds.EMPLOYEE_DEPARTMENT to sector
+        )
+        integrationHelper.onFieldsChangedNormalized(
+            fields = formData,
+            sourceDocument = "PPP",
+            companyScope = currentCompanyScope ?: cnpj
+        )
 
         setOperationInProgress(true)
         safeLaunch("PppActivity/generate") {

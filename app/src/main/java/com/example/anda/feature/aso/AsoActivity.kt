@@ -22,6 +22,8 @@ import com.example.anda.data.services.AsoOperationalPolicy
 import com.example.anda.data.services.DocumentArtifactExportService
 import com.example.anda.data.services.DocumentGenerationService
 import com.example.anda.data.integration.ServiceIntegrationHelper
+import com.example.anda.data.integration.ServiceIntegrationHelper.FieldIds
+import com.example.anda.data.integration.setupSmartAutofill
 import com.example.anda.databinding.ActivityAsoBinding
 import com.example.anda.domain.CompanyProfile
 import com.example.anda.domain.EmployeeExaminationType
@@ -73,6 +75,14 @@ class AsoActivity : AppCompatActivity() {
                 .trim()
             val currentCompanyCnpj = binding.companyCnpjInput.text.toString().filter(Char::isDigit)
 
+            syncAutofillBatch(
+                rawFields = mapOf(
+                    FieldIds.EMPLOYEE_NAME to binding.employeeNameInput.text.toString(),
+                    FieldIds.EMPLOYEE_CPF to binding.employeeCpfInput.text.toString()
+                ),
+                companyScope = employeeCompanyCnpj.ifBlank { currentCompanyCnpj.ifBlank { null } }
+            )
+
             if (currentCompanyCnpj.isBlank() && employeeCompanyCnpj.isNotBlank()) {
                 applySelectedCompany(
                     cnpj = employeeCompanyCnpj,
@@ -85,6 +95,10 @@ class AsoActivity : AppCompatActivity() {
                 employeeCompanyName.isNotBlank()
             ) {
                 binding.companyNameInput.setText(employeeCompanyName)
+                syncAutofillBatch(
+                    rawFields = mapOf(FieldIds.COMPANY_NAME to employeeCompanyName),
+                    companyScope = currentCompanyCnpj.ifBlank { null }
+                )
             }
         }
     }
@@ -110,14 +124,16 @@ class AsoActivity : AppCompatActivity() {
 
         // Initialize SmartAutofill
         integrationHelper = ServiceIntegrationHelper(this, lifecycleScope)
-        integrationHelper.prefillForm("ASO", mapOf(
-            "company_cnpj" to binding.companyCnpjInput,
-            "company_name" to binding.companyNameInput
-        ))
+        integrationHelper.prefillForm("ASO", asoAutofillFieldMap())
 
         DocumentLocalRepository.initialize(this)
         SstRepository.initialize(this)
         applyRequestContextFromIntent()
+        integrationHelper.prefillFormIfBlank(
+            documentType = "ASO",
+            fieldMap = asoAutofillFieldMap(),
+            companyScope = currentCompanyScope()
+        )
 
         setupExaminationTypeSpinner()
         setupRequiredFieldsSummary()
@@ -182,6 +198,13 @@ class AsoActivity : AppCompatActivity() {
                                 lastPrefilledCnpj = normalizedCnpj
                                 preloadLegalContext(normalizedCnpj)
                             }
+                            syncAutofillBatch(
+                                rawFields = mapOf(
+                                    FieldIds.COMPANY_CNPJ to normalizedCnpj,
+                                    FieldIds.COMPANY_NAME to c.legalName
+                                ),
+                                companyScope = normalizedCnpj.ifBlank { null }
+                            )
                             binding.lookupCompanyCnpjButton.isEnabled = true
                         }
                         !state.errorMessage.isNullOrBlank() -> {
@@ -198,6 +221,28 @@ class AsoActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Publish latest shared fields when users leave inputs, scoped by current company when available.
+        binding.companyCnpjInput.setupSmartAutofill(
+            helper = integrationHelper,
+            fieldId = FieldIds.COMPANY_CNPJ,
+            sourceDocument = "ASO"
+        ) { currentCompanyScope() }
+        binding.companyNameInput.setupSmartAutofill(
+            helper = integrationHelper,
+            fieldId = FieldIds.COMPANY_NAME,
+            sourceDocument = "ASO"
+        ) { currentCompanyScope() }
+        binding.employeeNameInput.setupSmartAutofill(
+            helper = integrationHelper,
+            fieldId = FieldIds.EMPLOYEE_NAME,
+            sourceDocument = "ASO"
+        ) { currentCompanyScope() }
+        binding.employeeCpfInput.setupSmartAutofill(
+            helper = integrationHelper,
+            fieldId = FieldIds.EMPLOYEE_CPF,
+            sourceDocument = "ASO"
+        ) { currentCompanyScope() }
     }
 
     private fun setupExaminationTypeSpinner() {
@@ -220,15 +265,20 @@ class AsoActivity : AppCompatActivity() {
         statusMessage: String
     ) {
         val normalizedCnpj = cnpj.filter(Char::isDigit)
+        val autofillFields = linkedMapOf<String, String>()
         if (normalizedCnpj.isNotBlank()) {
             binding.companyCnpjInput.setText(normalizedCnpj)
-            // Track for SmartAutofill
-            integrationHelper.onFieldChanged("company_cnpj", normalizedCnpj, "ASO")
+            autofillFields[FieldIds.COMPANY_CNPJ] = normalizedCnpj
         }
         if (legalName.isNotBlank()) {
             binding.companyNameInput.setText(legalName)
-            // Track for SmartAutofill
-            integrationHelper.onFieldChanged("company_name", legalName, "ASO")
+            autofillFields[FieldIds.COMPANY_NAME] = legalName
+        }
+        if (autofillFields.isNotEmpty()) {
+            syncAutofillBatch(
+                rawFields = autofillFields,
+                companyScope = normalizedCnpj.ifBlank { null }
+            )
         }
         if (cnae.isNotBlank()) {
             binding.companyCnaeInput.setText(cnae)
@@ -296,6 +346,16 @@ class AsoActivity : AppCompatActivity() {
     private fun generateAndSaveDraft() {
         if (isOperationInProgress) return
         clearFieldErrors()
+
+        // Publish current shared fields to SmartAutofill cache so future documents reuse freshest values.
+        syncAutofillBatch(
+            rawFields = mapOf(
+                FieldIds.COMPANY_CNPJ to binding.companyCnpjInput.text.toString(),
+                FieldIds.COMPANY_NAME to binding.companyNameInput.text.toString(),
+                FieldIds.EMPLOYEE_NAME to binding.employeeNameInput.text.toString(),
+                FieldIds.EMPLOYEE_CPF to binding.employeeCpfInput.text.toString()
+            )
+        )
 
         val company = CompanyProfile(
             cnpj = binding.companyCnpjInput.text.toString().filter(Char::isDigit),
@@ -442,10 +502,36 @@ class AsoActivity : AppCompatActivity() {
         if (requestCompanyName.isNotBlank() && binding.companyNameInput.text.isNullOrBlank()) {
             binding.companyNameInput.setText(requestCompanyName)
         }
+        syncAutofillBatch(
+            rawFields = mapOf(
+                FieldIds.COMPANY_CNPJ to requestCompanyCnpj,
+                FieldIds.COMPANY_NAME to requestCompanyName
+            ),
+            companyScope = requestCompanyCnpj.ifBlank { null }
+        )
         if (!sourceRequestCode.isNullOrBlank()) {
             binding.asoStatusText.text = getString(R.string.service_request_linked_status_template, sourceRequestCode)
         }
     }
+
+    private fun syncAutofillBatch(rawFields: Map<String, String>, companyScope: String? = currentCompanyScope()) {
+        integrationHelper.onFieldsChangedNormalized(
+            fields = rawFields,
+            sourceDocument = "ASO",
+            companyScope = companyScope
+        )
+    }
+
+    private fun asoAutofillFieldMap() = mapOf(
+        FieldIds.COMPANY_CNPJ to binding.companyCnpjInput,
+        FieldIds.COMPANY_NAME to binding.companyNameInput
+    )
+
+    private fun currentCompanyScope(): String? {
+        val digits = binding.companyCnpjInput.text?.toString().orEmpty().filter(Char::isDigit)
+        return digits.takeIf { it.length == 14 }
+    }
+
 
     private fun setupRequiredFieldsSummary() {
         val updater = {

@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.anda.R
 import com.example.anda.core.stability.CrashShield
 import com.example.anda.core.stability.safeLaunch
+import com.example.anda.data.integration.ServiceIntegrationHelper
 import com.example.anda.data.local.entity.DocumentEntity
 import com.example.anda.data.repository.DocumentLocalRepository
 import com.example.anda.data.repository.SstRepository
@@ -34,6 +35,7 @@ import java.util.Locale
 class PgrActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPgrBinding
+    private lateinit var integrationHelper: ServiceIntegrationHelper
     private val autofillService = AutofillService()
     private val generationService = DocumentGenerationService()
     private val artifactExportService = DocumentArtifactExportService()
@@ -44,6 +46,7 @@ class PgrActivity : AppCompatActivity() {
     private var isOperationInProgress = false
     private var lastPrefilledCnpj: String? = null
     private var sourceRequestCode: String? = null
+    private var currentCompanyScope: String? = null  // Track current company for scoped operations
 
     private val pickCompanyLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -53,11 +56,31 @@ class PgrActivity : AppCompatActivity() {
             val cnpj = data.getStringExtra(CompanyManagementActivity.RESULT_COMPANY_CNPJ).orEmpty()
             val name = data.getStringExtra(CompanyManagementActivity.RESULT_COMPANY_LEGAL_NAME).orEmpty()
             val cnae = data.getStringExtra(CompanyManagementActivity.RESULT_COMPANY_CNAE).orEmpty()
+            
+            // Update UI fields
             if (cnpj.isNotBlank()) binding.pgrCnpjInput.setText(cnpj)
             if (name.isNotBlank()) binding.pgrCompanyNameInput.setText(name)
             if (cnae.isNotBlank()) binding.pgrCnaeInput.setText(cnae)
+            
+            // Track company scope for future operations (use clean CNPJ as scope)
+            val cleanCnpj = cnpj.filter(Char::isDigit)
+            currentCompanyScope = cleanCnpj
+            
+            // Publish company selection to autofill system
+            if (cleanCnpj.isNotEmpty()) {
+                val companyFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to cnpj,
+                    ServiceIntegrationHelper.FieldIds.COMPANY_NAME to name
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = companyFields,
+                    sourceDocument = "PGR",
+                    companyScope = cleanCnpj
+                )
+            }
+            
             binding.pgrCnpjStatusText.text = getString(R.string.doc_pick_company_selected_local)
-            preloadLegalContext(cnpj.filter(Char::isDigit))
+            preloadLegalContext(cleanCnpj)
         }
     }
 
@@ -65,6 +88,9 @@ class PgrActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPgrBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize SmartAutofill integration helper
+        integrationHelper = ServiceIntegrationHelper(this, lifecycleScope)
 
         DocumentLocalRepository.initialize(this)
         SstRepository.initialize(this)
@@ -155,6 +181,18 @@ class PgrActivity : AppCompatActivity() {
             showToast(validationMessageFor(missingFields.first()))
             return
         }
+
+        // Publish form data to autofill system before generation
+        val formData = mapOf(
+            ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to cnpj,
+            ServiceIntegrationHelper.FieldIds.COMPANY_NAME to companyName,
+            ServiceIntegrationHelper.FieldIds.HAZARD_TYPE to cnae
+        )
+        integrationHelper.onFieldsChangedNormalized(
+            fields = formData,
+            sourceDocument = "PGR",
+            companyScope = currentCompanyScope ?: cnpj
+        )
 
         setOperationInProgress(true)
         safeLaunch("PgrActivity/generate") {
@@ -261,9 +299,25 @@ class PgrActivity : AppCompatActivity() {
         val requestCompanyName = intent.getStringExtra(ServiceRequestIntentContract.EXTRA_REQUEST_COMPANY_NAME)
             .orEmpty()
             .trim()
+        
         if (requestCompanyCnpj.length == 14 && binding.pgrCnpjInput.text.isNullOrBlank()) {
             binding.pgrCnpjInput.setText(requestCompanyCnpj)
             lastPrefilledCnpj = requestCompanyCnpj
+            currentCompanyScope = requestCompanyCnpj
+            
+            // Publish intent company context to autofill system
+            if (requestCompanyName.isNotBlank()) {
+                val companyFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to requestCompanyCnpj,
+                    ServiceIntegrationHelper.FieldIds.COMPANY_NAME to requestCompanyName
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = companyFields,
+                    sourceDocument = "PGR",
+                    companyScope = requestCompanyCnpj
+                )
+            }
+            
             preloadLegalContext(requestCompanyCnpj)
         }
         if (requestCompanyName.isNotBlank() && binding.pgrCompanyNameInput.text.isNullOrBlank()) {

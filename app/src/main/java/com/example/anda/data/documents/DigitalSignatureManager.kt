@@ -176,7 +176,15 @@ class DigitalSignatureManager(private val context: Context) {
                 .setCertificateNotBefore(validFrom)
                 .setCertificateNotAfter(validUntil)
                 .setCertificateSubject(X500Principal("CN=$signerCpf, O=ANDA, C=BR"))
-                .setUserAuthenticationRequired(false)  // Set to true to require biometric/PIN
+                .setUserAuthenticationRequired(true)  // Required biometric/PIN
+                .apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        setUserAuthenticationParameters(
+                            0, // Require auth for every use
+                            KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL
+                        )
+                    }
+                }
                 .build()
         } else {
             // Fallback for older Android - shouldn't reach here if minSdk is 26

@@ -21,6 +21,7 @@ data class AutofillField(
     val fieldValue: String,        // e.g., "12.345.678/0001-90"
     val fieldType: AutofillFieldType,  // COMPANY, EMPLOYEE, MEDICAL, etc.
     val sourceDocument: String,    // e.g., "ASO", "PCMSO", "PGR"
+    val companyScope: String? = null, // Optional company/CNPJ scope for safer cross-document prefill
     val timestamp: Long = System.currentTimeMillis()
 )
 
@@ -45,6 +46,11 @@ data class DocumentFieldMap(
 )
 
 class SmartAutofillService {
+
+    enum class FieldUpdateStatus {
+        APPLIED,
+        IGNORED_STALE
+    }
     
     // Registry of all document → field mappings
     private val documentRegistry = mapOf(
@@ -62,11 +68,27 @@ class SmartAutofillService {
         "INSALUBRIDADE" to listOf("company_cnpj", "employee_cpf", "employee_name", "hazard_type"),
         "PERICULOSIDADE" to listOf("company_cnpj", "employee_cpf", "employee_name", "hazard_type")
     )
+
+    /** Reverse index for O(1) affected-count queries. */
+    private val fieldToDocuments: Map<String, List<String>> = run {
+        val index = mutableMapOf<String, MutableList<String>>()
+        documentRegistry.forEach { (docType, fields) ->
+            fields.forEach { fieldId ->
+                index.getOrPut(fieldId) { mutableListOf() }.add(docType)
+            }
+        }
+        index.mapValues { it.value.toList() }
+    }
     
     /**
      * Cache of recently filled fields for cross-document updates
      */
     private val autofillCache = mutableMapOf<String, AutofillField>()
+
+    /**
+     * Company-scoped cache. Key is normalized company scope (e.g., CNPJ), value is field cache.
+     */
+    private val scopedAutofillCache = mutableMapOf<String, MutableMap<String, AutofillField>>()
     
     /**
      * Get all documents that should be updated when this field changes.
@@ -75,9 +97,14 @@ class SmartAutofillService {
      * @return List of document types that need this field
      */
     fun getAffectedDocuments(fieldId: String): List<String> {
-        return documentRegistry.filterValues { fields ->
-            fields.contains(fieldId)
-        }.keys.toList()
+        return fieldToDocuments[fieldId]?.toList() ?: emptyList()
+    }
+
+    /**
+     * Fast count helper for UI messaging without allocating full lists repeatedly.
+     */
+    fun getAffectedDocumentsCount(fieldId: String): Int {
+        return fieldToDocuments[fieldId]?.size ?: 0
     }
     
     /**
@@ -87,9 +114,15 @@ class SmartAutofillService {
      * - A list of "N documents will be updated"
      * - A confirmation prompt (optional)
      */
-    suspend fun onFieldChanged(field: AutofillField): List<String> = withContext(Dispatchers.Default) {
-        // Store in cache
-        autofillCache[field.fieldId] = field
+    suspend fun onFieldChanged(field: AutofillField, companyScope: String? = field.companyScope): List<String> = withContext(Dispatchers.Default) {
+        // Store in company scope cache when scope is provided; otherwise store globally.
+        val scoped = normalizeScope(companyScope)
+        if (scoped != null) {
+            val scopedMap = scopedAutofillCache.getOrPut(scoped) { mutableMapOf() }
+            scopedMap[field.fieldId] = field.copy(companyScope = scoped)
+        } else {
+            autofillCache[field.fieldId] = field
+        }
         
         // Get all affected documents
         val affected = getAffectedDocuments(field.fieldId)
@@ -105,6 +138,45 @@ class SmartAutofillService {
         
         affected
     }
+
+    /**
+     * Batch variant of onFieldChanged for multi-field form saves.
+     * Returns affected documents by field id.
+     */
+    suspend fun onFieldsChanged(
+        fields: List<AutofillField>,
+        companyScope: String? = null
+    ): Map<String, List<String>> = withContext(Dispatchers.Default) {
+        if (fields.isEmpty()) return@withContext emptyMap()
+
+        val result = linkedMapOf<String, List<String>>()
+        fields.forEach { field ->
+            result[field.fieldId] = onFieldChanged(field, companyScope)
+        }
+        result
+    }
+
+    /**
+     * Apply field update only if it is newer than cached value for same field/scope.
+     */
+    suspend fun onFieldChangedIfNewer(
+        field: AutofillField,
+        companyScope: String? = field.companyScope
+    ): FieldUpdateStatus = withContext(Dispatchers.Default) {
+        val scoped = normalizeScope(companyScope)
+        val existing = if (scoped != null) {
+            scopedAutofillCache[scoped]?.get(field.fieldId)
+        } else {
+            autofillCache[field.fieldId]
+        }
+
+        if (existing != null && field.timestamp <= existing.timestamp) {
+            return@withContext FieldUpdateStatus.IGNORED_STALE
+        }
+
+        onFieldChanged(field, companyScope)
+        FieldUpdateStatus.APPLIED
+    }
     
     /**
      * Retrieve the most recent value for a field across all documents.
@@ -113,7 +185,11 @@ class SmartAutofillService {
      * @param fieldId Field to retrieve
      * @return The most recent value, or null if never filled
      */
-    fun getFieldValue(fieldId: String): String? {
+    fun getFieldValue(fieldId: String, companyScope: String? = null): String? {
+        val scoped = normalizeScope(companyScope)
+        if (scoped != null) {
+            return scopedAutofillCache[scoped]?.get(fieldId)?.fieldValue ?: autofillCache[fieldId]?.fieldValue
+        }
         return autofillCache[fieldId]?.fieldValue
     }
     
@@ -123,17 +199,35 @@ class SmartAutofillService {
      * Example: User opens PCMSO form after filling ASO with company info.
      * This method populates the PCMSO form with cached company data.
      */
-    suspend fun prefillDocument(documentType: String): Map<String, String> = withContext(Dispatchers.Default) {
+    suspend fun prefillDocument(documentType: String, companyScope: String? = null): Map<String, String> = withContext(Dispatchers.Default) {
         val fields = documentRegistry[documentType] ?: emptyList()
         val prefilled = mutableMapOf<String, String>()
+        val scoped = normalizeScope(companyScope)
+        val scopedValues = if (scoped != null) scopedAutofillCache[scoped] else null
         
         fields.forEach { fieldId ->
-            autofillCache[fieldId]?.fieldValue?.let {
+            (scopedValues?.get(fieldId)?.fieldValue ?: autofillCache[fieldId]?.fieldValue)?.let {
                 prefilled[fieldId] = it
             }
         }
         
         prefilled
+    }
+
+    /**
+     * Batch prefill for screens that prepare multiple documents in one flow.
+     */
+    suspend fun prefillDocuments(
+        documentTypes: List<String>,
+        companyScope: String? = null
+    ): Map<String, Map<String, String>> = withContext(Dispatchers.Default) {
+        if (documentTypes.isEmpty()) return@withContext emptyMap()
+
+        val result = linkedMapOf<String, Map<String, String>>()
+        documentTypes.forEach { documentType ->
+            result[documentType] = prefillDocument(documentType, companyScope)
+        }
+        result
     }
     
     /**
@@ -141,7 +235,15 @@ class SmartAutofillService {
      */
     fun clearCache() {
         autofillCache.clear()
+        scopedAutofillCache.clear()
         runCatching { android.util.Log.d("SmartAutofill", "Cache cleared") }
+    }
+
+    /**
+     * Clear cache only for a specific company scope.
+     */
+    fun clearCacheForCompany(companyScope: String) {
+        normalizeScope(companyScope)?.let { scopedAutofillCache.remove(it) }
     }
     
     /**
@@ -149,6 +251,19 @@ class SmartAutofillService {
      */
     fun exportState(): Map<String, AutofillField> {
         return autofillCache.toMap()
+    }
+
+    /**
+     * Export scoped autofill state for diagnostics and tests.
+     */
+    fun exportStateForCompany(companyScope: String): Map<String, AutofillField> {
+        val scope = normalizeScope(companyScope) ?: return emptyMap()
+        return scopedAutofillCache[scope]?.toMap() ?: emptyMap()
+    }
+
+    private fun normalizeScope(companyScope: String?): String? {
+        val trimmed = companyScope?.trim()
+        return if (trimmed.isNullOrEmpty()) null else trimmed
     }
 }
 

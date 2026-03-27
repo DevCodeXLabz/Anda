@@ -5,8 +5,10 @@ import com.example.anda.data.history.LookupHistoryItem
 import com.example.anda.data.history.LookupHistoryStore
 import com.example.anda.data.local.AppDatabase
 import com.example.anda.data.local.entity.CompanyEntity
+import com.example.anda.data.local.entity.ServiceRequestEntity
 import com.example.anda.data.network.BrasilApiClient
 import com.example.anda.data.network.CompanyProfile
+import com.example.anda.data.requests.ServiceRequestStatus
 import com.example.anda.data.sync.SyncQueueRepository
 import com.example.anda.domain.CnaeRiskMapper
 import kotlinx.coroutines.delay
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -205,6 +208,35 @@ object SstRepository {
         historyStore?.append(item)
         _lookupHistory.value = historyStore?.readAll().orEmpty()
     }
+
+    suspend fun createServiceRequest(
+        contractorName: String,
+        contractorCnpj: String,
+        documentType: String,
+        whatsapp: String = "",
+        notes: String = ""
+    ): String {
+        val database = appDatabase ?: return ""
+        val requestCode = buildRequestCode(contractorName)
+        val request = ServiceRequestEntity(
+            requestCode = requestCode,
+            contractorName = contractorName,
+            contractorCnpj = contractorCnpj.filter(Char::isDigit),
+            requestedDocumentType = documentType,
+            contactWhatsapp = whatsapp,
+            preferredContactChannel = if (whatsapp.isNotBlank()) "whatsapp" else "app",
+            notes = notes,
+            status = ServiceRequestStatus.OPEN
+        )
+        database.serviceRequestDao().upsert(request)
+        return requestCode
+    }
+
+    private fun buildRequestCode(contractorName: String): String {
+        val prefix = contractorName.trim().uppercase(Locale.ROOT).take(3).padEnd(3, 'X')
+        val serial = (1000 + kotlin.random.Random.nextInt(9000)).toString()
+        return "$prefix-${System.currentTimeMillis().toString().takeLast(6)}-$serial"
+    }
 }
 
 data class DashboardCounts(
@@ -238,4 +270,3 @@ private fun CompanyEntity.toProfile(): CompanyProfile {
         postalCode = postalCode
     )
 }
-

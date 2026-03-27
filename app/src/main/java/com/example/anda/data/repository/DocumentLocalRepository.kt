@@ -50,23 +50,47 @@ object DocumentLocalRepository {
         publicKeyFingerprint: String = "",
         signatureAlgorithm: String = "SHA256withRSA"
     ) {
+        val encryptedSignedBy = LocalDataProtection.encryptString(signedBy)
         dao().markSigned(
             documentId = documentId,
             signedAt = signedAt,
-            signedBy = LocalDataProtection.encryptString(signedBy),
+            signedBy = encryptedSignedBy,
             contentHash = contentHash,
             signatureB64 = signatureB64,
             publicKeyFingerprint = publicKeyFingerprint,
             signatureAlgorithm = signatureAlgorithm
         )
         recordDocumentVersion(documentId, "", contentHash, "SIGNED", editedBy = signedBy)
-        findByDocumentId(documentId)?.let { document ->
+        
+        val document = findByDocumentId(documentId)
+        if (document != null) {
             linkRequestForDocument(document, ServiceRequestLifecyclePolicy.DocumentEvent.SIGNED)
+            
+            // Auto-complete the request if it's the only one or meet criteria
+            if (document.sourceRequestCode != null) {
+                updateRequestStatusFromEvent(document.sourceRequestCode, ServiceRequestLifecyclePolicy.DocumentEvent.SIGNED, document)
+            }
         }
+
         SyncQueueRepository.enqueueDocumentSync(
             documentId = documentId,
             payloadJson = buildPayload(documentId)
         )
+    }
+
+    suspend fun markPdfExported(documentId: String, pdfPath: String) {
+        val encryptedPdfPath = LocalDataProtection.encryptString(pdfPath)
+        dao().markPdfExported(documentId, encryptedPdfPath)
+        
+        val document = findByDocumentId(documentId)
+        if (document != null && document.sourceRequestCode != null) {
+            updateRequestStatusFromEvent(document.sourceRequestCode, ServiceRequestLifecyclePolicy.DocumentEvent.PDF_EXPORTED, document)
+        }
+    }
+
+    suspend fun markAuditExported(documentId: String, auditTxtPath: String) {
+        val encryptedAuditPath = LocalDataProtection.encryptString(auditTxtPath)
+        dao().markAuditExported(documentId, encryptedAuditPath)
     }
 
     /**
@@ -97,23 +121,6 @@ object DocumentLocalRepository {
                 isRestorable = changeType != "SIGNED",
                 createdAt = System.currentTimeMillis()
             )
-        )
-    }
-
-    suspend fun markPdfExported(documentId: String, pdfPath: String) {
-        dao().markPdfExported(
-            documentId = documentId,
-            pdfPath = LocalDataProtection.encryptString(pdfPath)
-        )
-        findByDocumentId(documentId)?.let { document ->
-            linkRequestForDocument(document, ServiceRequestLifecyclePolicy.DocumentEvent.PDF_EXPORTED)
-        }
-    }
-
-    suspend fun markAuditExported(documentId: String, auditTxtPath: String) {
-        dao().markAuditExported(
-            documentId = documentId,
-            auditTxtPath = LocalDataProtection.encryptString(auditTxtPath)
         )
     }
 
@@ -218,68 +225,50 @@ object DocumentLocalRepository {
 
     private fun dao() = checkNotNull(db) { "DocumentLocalRepository nao inicializado" }.documentDao()
 
-    private suspend fun linkRequestForDocument(
-        document: DocumentEntity,
-        event: ServiceRequestLifecyclePolicy.DocumentEvent
+    private suspend fun updateRequestStatusFromEvent(
+        requestCode: String,
+        event: ServiceRequestLifecyclePolicy.DocumentEvent,
+        document: DocumentEntity
     ) {
         val database = db ?: return
-        val requestDao = database.serviceRequestDao()
-        val normalizedType = DocumentTypeNormalizer.normalize(document.documentType)
-
-        // If sourceRequestCode is explicitly provided, require an exact match
-        // and do NOT fallback to heuristic selection. This prevents accidental
-        // reassignment to an unrelated active request when the provided code is
-        // invalid or mistyped.
-        val explicitCode = document.sourceRequestCode?.takeIf { it.isNotBlank() }
-        val explicitTarget = explicitCode?.let { requestDao.findByRequestCode(it) }
-        if (explicitCode != null && explicitTarget == null) {
-            // Caller provided a sourceRequestCode but it wasn't found. Emit a
-            // warning so callers/telemetry can detect mismatches, then fall
-            // back to the heuristic selection below. This is a safer, more
-            // permissive behavior that avoids silently dropping the document.
-            Log.w(
-                "DocumentLocalRepository",
-                "sourceRequestCode provided but not found: $explicitCode for document=${document.documentId}. Falling back to heuristic selection."
+        val request = database.serviceRequestDao().findByRequestCode(requestCode) ?: return
+        
+        val nextStatus = ServiceRequestLifecyclePolicy.nextStatus(request.status, event)
+        if (nextStatus != request.status) {
+            val stamp = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.forLanguageTag("pt-BR")).format(Date())
+            val eventCode = when(event) {
+                ServiceRequestLifecyclePolicy.DocumentEvent.DRAFT_SAVED -> "DRAFT"
+                ServiceRequestLifecyclePolicy.DocumentEvent.SIGNED -> "SIGNED"
+                ServiceRequestLifecyclePolicy.DocumentEvent.PDF_EXPORTED -> "PDF"
+            }
+            
+            val logLine = "[ANDA-LINK][$stamp] req=$requestCode type=${document.documentType} doc=${document.documentId};$eventCode status=$nextStatus"
+            val newNotes = if (request.notes.isBlank()) logLine else "${request.notes}\n$logLine"
+            
+            database.serviceRequestDao().updateNotesAndStatus(
+                id = request.id,
+                notes = newNotes,
+                status = nextStatus
             )
+            
+            // Notify if completed
+            if (ServiceRequestStatus.isCompleted(nextStatus)) {
+                appContext?.let { ctx ->
+                    ServiceRequestNotificationService(ctx).notifyCompanyRequestCompleted(
+                        companyEmail = "", // Would be in CompanyEntity
+                        companyName = request.contractorName,
+                        requestType = request.requestedDocumentType,
+                        requestId = request.requestCode,
+                        documentCount = 1
+                    )
+                }
+            }
         }
+    }
 
-        // Normalize contractor CNPJ to digits-only to improve matching against
-        // stored request contractor identifiers which are expected to be digits-only.
-        val normalizedCnpj = document.companyCnpj.filter { it.isDigit() }
-
-        val target = explicitTarget ?: run {
-            val activeRequests = requestDao.listActiveByContractorCnpj(normalizedCnpj)
-            if (activeRequests.isEmpty()) return
-            activeRequests.firstOrNull {
-                DocumentTypeNormalizer.normalize(it.requestedDocumentType) == normalizedType
-            } ?: activeRequests.first()
-        }
-
-        val previousStatus = ServiceRequestStatus.normalize(target.status)
-        val nextStatus = ServiceRequestLifecyclePolicy.nextStatus(target.status, event)
-        val nextNotes = appendRequestLinkNote(
-            existingNotes = target.notes,
-            requestCode = target.requestCode,
-            documentId = document.documentId,
-            documentType = normalizedType,
-            event = event,
-            status = nextStatus
-        )
-
-        requestDao.updateNotesAndStatus(
-            id = target.id,
-            notes = nextNotes,
-            status = nextStatus
-        )
-
-        notifyRequestLifecycleProgress(
-            requestCode = target.requestCode,
-            contractorName = target.contractorName,
-            requestedDocumentType = target.requestedDocumentType,
-            assignedEmployeeName = target.assignedEmployeeName,
-            previousStatus = previousStatus,
-            nextStatus = ServiceRequestStatus.normalize(nextStatus)
-        )
+    private suspend fun linkRequestForDocument(document: DocumentEntity, event: ServiceRequestLifecyclePolicy.DocumentEvent) {
+        val requestCode = document.sourceRequestCode ?: return
+        updateRequestStatusFromEvent(requestCode, event, document)
     }
 
     private fun notifyRequestLifecycleProgress(
