@@ -18,6 +18,7 @@ import com.example.anda.data.repository.SstRepository
 import com.example.anda.data.services.AutofillService
 import com.example.anda.data.services.DocumentArtifactExportService
 import com.example.anda.data.services.DocumentGenerationService
+import com.example.anda.data.integration.ServiceIntegrationHelper
 import com.example.anda.databinding.ActivityOsBinding
 import com.example.anda.feature.companies.CompanyManagementActivity
 import com.example.anda.feature.employees.EmployeeManagementActivity
@@ -43,6 +44,8 @@ class OsActivity : AppCompatActivity() {
     private var isOperationInProgress = false
     private var lastPrefilledCnpj: String? = null
     private var sourceRequestCode: String? = null
+    private lateinit var integrationHelper: ServiceIntegrationHelper
+    private var currentCompanyScope: String? = null
 
     private val pickCompanyLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -55,6 +58,20 @@ class OsActivity : AppCompatActivity() {
             if (cnpj.isNotBlank()) binding.osCnpjInput.setText(cnpj)
             if (name.isNotBlank()) binding.osCompanyNameInput.setText(name)
             if (cnae.isNotBlank()) binding.osCnaeInput.setText(cnae)
+            // Track and publish company selection
+            val cleanCnpj = cnpj.filter(Char::isDigit)
+            currentCompanyScope = cleanCnpj
+            if (cleanCnpj.isNotBlank()) {
+                val companyFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to cnpj,
+                    ServiceIntegrationHelper.FieldIds.COMPANY_NAME to name
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = companyFields,
+                    sourceDocument = "OS",
+                    companyScope = cleanCnpj
+                )
+            }
             binding.osCnpjStatusText.text = getString(R.string.doc_pick_company_selected_local)
             preloadLegalContext(cnpj.filter(Char::isDigit))
         }
@@ -78,6 +95,20 @@ class OsActivity : AppCompatActivity() {
                 binding.osCnpjInput.setText(empCnpj)
                 binding.osCompanyNameInput.setText(empComp)
             }
+            // Publish employee selection to autofill (scoped to employee company if available)
+            val empScope = empCnpj.filter { it.isDigit() }.ifBlank { currentCompanyScope }
+            if (!empScope.isNullOrBlank()) {
+                val employeeFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.EMPLOYEE_NAME to name,
+                    ServiceIntegrationHelper.FieldIds.EMPLOYEE_CPF to cpf,
+                    ServiceIntegrationHelper.FieldIds.EMPLOYEE_DEPARTMENT to role
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = employeeFields,
+                    sourceDocument = "OS",
+                    companyScope = empScope
+                )
+            }
         }
     }
 
@@ -85,6 +116,8 @@ class OsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // Initialize SmartAutofill integration helper
+        integrationHelper = ServiceIntegrationHelper(this, lifecycleScope)
         DocumentLocalRepository.initialize(this)
         SstRepository.initialize(this)
         applyRequestContextFromIntent()
@@ -166,6 +199,20 @@ class OsActivity : AppCompatActivity() {
             showToast(validationMessageFor(missingFields.first()))
             return
         }
+
+        // Publish form data to autofill system before generation
+        val formData = mapOf(
+            ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to cnpj,
+            ServiceIntegrationHelper.FieldIds.COMPANY_NAME to companyName,
+            ServiceIntegrationHelper.FieldIds.EMPLOYEE_CPF to employeeCpf,
+            ServiceIntegrationHelper.FieldIds.EMPLOYEE_NAME to employee,
+            ServiceIntegrationHelper.FieldIds.EMPLOYEE_DEPARTMENT to sector
+        )
+        integrationHelper.onFieldsChangedNormalized(
+            fields = formData,
+            sourceDocument = "OS",
+            companyScope = currentCompanyScope ?: cnpj
+        )
 
         setOperationInProgress(true)
         safeLaunch("OsActivity/generate") {
@@ -252,6 +299,19 @@ class OsActivity : AppCompatActivity() {
         if (requestCompanyCnpj.length == 14 && binding.osCnpjInput.text.isNullOrBlank()) {
             binding.osCnpjInput.setText(requestCompanyCnpj)
             lastPrefilledCnpj = requestCompanyCnpj
+            // Track and publish company selection from incoming request
+            currentCompanyScope = requestCompanyCnpj
+            if (requestCompanyName.isNotBlank()) {
+                val companyFields = mapOf(
+                    ServiceIntegrationHelper.FieldIds.COMPANY_CNPJ to requestCompanyCnpj,
+                    ServiceIntegrationHelper.FieldIds.COMPANY_NAME to requestCompanyName
+                )
+                integrationHelper.onFieldsChangedNormalized(
+                    fields = companyFields,
+                    sourceDocument = "OS",
+                    companyScope = requestCompanyCnpj
+                )
+            }
             preloadLegalContext(requestCompanyCnpj)
         }
         if (requestCompanyName.isNotBlank() && binding.osCompanyNameInput.text.isNullOrBlank()) {
@@ -265,7 +325,7 @@ class OsActivity : AppCompatActivity() {
     private fun signCurrentDocument() {
         if (isOperationInProgress) return
         val documentId = currentDocumentId
-        if (documentId.isNullOrBlank() || currentPayload.isBlank()) {
+        if (documentId.isNullOrBlank()  currentPayload.isBlank()) {
             showToast(R.string.os_error_generate_before_sign)
             return
         }
