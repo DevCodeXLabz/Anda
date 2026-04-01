@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Anda</string>
+    <string name="app_name">Anda — SST</string>
     <string name="home_title">Anda - SST</string>
     <string name="home_counts_placeholder">-</string>
     <string name="home_status_ready">Pronto</string>
@@ -71,6 +71,7 @@
     <string name="document_detail_export_success">PDF exportado com sucesso</string>
     <string name="document_detail_export_success_with_file">PDF exportado com sucesso: %1$s</string>
     <string name="document_detail_export_error">Falha ao exportar PDF/auditoria</string>
+    <string name="document_sign_persist_failed">Falha ao salvar assinatura local</string>
     <string name="documents_sync_health_template">Saude do sync: %1$d total | %2$d nao sincronizados | taxa sucesso %3$.0f%%</string>
     <string name="documents_retry_stats_template">Tentativas: %1$d | media/doc %2$.1f | max/doc %3$d</string>
     <string name="documents_sync_health_with_retry_template">%1$s
@@ -411,6 +412,7 @@ Auditoria TXT: %2$s
     <string name="aso_lookup_searching_company">Buscando empresa...</string>
     <string name="aso_lookup_company_risk_template">Empresa: %1$s | Grau de risco: %2$d</string>
     <string name="aso_lookup_not_found_template">Não encontrado: %1$s</string>
+    <string name="aso_lookup_not_found">Não encontrado</string>
     <string name="aso_default_doctor_crm">CRM-N/A</string>
     <string name="aso_default_clinic_name">Clínica SST</string>
     <string name="aso_default_clinic_cnpj">00000000000000</string>
@@ -431,6 +433,7 @@ Auditoria TXT: %2$s
     <string name="aso_error_doctor_required_message">Informe o médico responsável</string>
     <string name="aso_error_generate_before_sign">Gere o ASO antes de assinar</string>
     <string name="aso_error_biometric_unavailable">Biometria/credencial indisponível no aparelho</string>
+    <string name="aso_error_sign_persist_failed">Assinatura concluída, mas falhou ao salvar localmente</string>
     <string name="aso_signed_by_fallback">Responsável</string>
     <string name="aso_error_generate_before_export">Gere o ASO antes de exportar</string>
     <string name="aso_export_title">ASO - ANDA</string>
@@ -761,6 +764,10 @@ Validade: %6$s
     <string name="settings_display_name_hint">Nome de exibicao (opcional)</string>
     <string name="settings_save_name_button">Salvar nome</string>
     <string name="settings_name_saved">Nome atualizado</string>
+    <string name="settings_company_id_hint">CNPJ da empresa/clinica (14 digitos)</string>
+    <string name="settings_save_company_id_button">Salvar CNPJ</string>
+    <string name="settings_company_id_saved">CNPJ salvo</string>
+    <string name="settings_company_id_invalid">Informe um CNPJ com 14 digitos ou deixe em branco</string>
     <string name="settings_biometric_toggle_title">Usar biometria para desbloquear</string>
     <string name="settings_biometric_toggle_desc">Permite desbloqueio rapido com digital ou rosto</string>
     <string name="settings_biometric_enabled_toast">Biometria ativada</string>
@@ -783,6 +790,9 @@ Validade: %6$s
     <!-- Home commons -->
     <string name="home_ops_loading">Carregando estatisticas…</string>
     <string name="home_welcome_name_template">Ola, %1$s</string>
+    <string name="home_feature_unavailable">Funcionalidade indisponivel no momento: %1$s</string>
+    <string name="home_unexpected_error">Erro inesperado ao abrir funcionalidade</string>
+    <string name="home_pending_requests_badge">%1$d pendentes</string>
 
     <!-- Technician home -->
     <string name="technician_home_title">ANDA Técnico SST</string>
@@ -888,6 +898,7 @@ Validade: %6$s
     <string name="settings_about_legal_title">Aviso Legal</string>
     <string name="settings_about_legal_body">Este aplicativo é uma ferramenta de apoio. Consulte sempre profissionais habilitados em SST para decisões técnicas e legais.</string>
     <string name="settings_about_privacy_button">Política de Privacidade e LGPD</string>
+    <string name="settings_about_diagnostics_button">Abrir diagnostico tecnico (debug)</string>
     <string name="settings_about_version_placeholder">—</string>
 
     <!-- Manifest activity labels -->
@@ -1121,6 +1132,7 @@ Sincronização: %5$s</string>
 
     <!-- Company management shortcut on home screens -->
     <string name="home_open_companies">🏢  Empresas</string>
+    <string name="home_open_analytics">📊  Dashboard de Produtividade</string>
     <string name="manifest_label_company_management">Empresas</string>
 
     <!-- LGPD Consent: Crashlytics opt-in dialog -->
@@ -1151,6 +1163,36 @@ Sincronização: %5$s</string>
     <string name="analytics_revenue_title">Faturamento</string>
     <string name="analytics_total_revenue">Total:</string>
     <string name="analytics_empty_state">Nenhum dado disponível para este período</string>
+    <string name="service_request_done_requires_signed_or_pdf">Para concluir, o documento vinculado precisa estar assinado ou com PDF exportado.</string>
+    <string name="service_request_status_already_updated">Esta solicitação já foi atualizada por outra ação.</string>
+    <string name="service_request_action_in_progress">Ação em andamento para esta solicitação. Aguarde.</string>
+    <string name="service_request_action_lock_label">Processando…</string>
+
+    <!-- Document expiry notifications -->
+    <string name="notif_channel_doc_expiry_name">Alertas de Documentos</string>
+    <string name="notif_channel_doc_expiry_desc">Avisos sobre documentos SST com validade próxima do vencimento</string>
+    <string name="notif_expiry_critical_title">⚠️ %1$d documento(s) vencem em 7 dias</string>
+    <string name="notif_expiry_critical_body">%1$d documento(s) SST vencem nos próximos 7 dias. Renove agora para evitar irregularidades.</string>
+    <string name="notif_expiry_critical_body_with_warning">%1$d crítico(s) (≤7 dias) e %2$d em alerta (≤30 dias). Acesse Documentos para renovar.</string>
+    <string name="notif_expiry_warning_title">📋 %1$d documento(s) vencem em 30 dias</string>
+    <string name="notif_expiry_warning_body">%1$d documento(s) SST vencem nos próximos 30 dias. Planeje a renovação com antecedência.</string>
+
+    <!-- Compliance Alerts -->
+    <string name="manifest_label_compliance_alerts">Alertas de Conformidade</string>
+    <string name="compliance_alerts_title">Alertas de Conformidade</string>
+    <string name="compliance_alerts_back">Voltar</string>
+    <string name="compliance_alerts_refresh">Atualizar</string>
+    <string name="compliance_alerts_loading">Carregando alertas...</string>
+    <string name="compliance_alerts_empty">Nenhum alerta ativo no momento.</string>
+    <string name="compliance_alerts_all_good">Conformidade OK. Nenhum alerta ativo.</string>
+    <string name="compliance_alerts_summary_template">%1$d alerta(s): %2$d vencido(s), %3$d a vencer, %4$d sem assinatura, %5$d sem PDF</string>
+    <string name="compliance_alerts_details_template">Tipo: %1$s | Empresa: %2$s
+%3$s</string>
+    <string name="compliance_alerts_open_hint">Toque para abrir o documento</string>
+    <string name="compliance_alerts_severity_expired">VENCIDO</string>
+    <string name="compliance_alerts_severity_critical">CRITICO</string>
+    <string name="compliance_alerts_severity_warning">ALERTA</string>
+    <string name="compliance_alerts_severity_info">INFO</string>
 </resources>
 
 
