@@ -325,7 +325,7 @@ class OsActivity : AppCompatActivity() {
     private fun signCurrentDocument() {
         if (isOperationInProgress) return
         val documentId = currentDocumentId
-        if (documentId.isNullOrBlank()  currentPayload.isBlank()) {
+        if (documentId.isNullOrBlank() || currentPayload.isBlank()) {
             showToast(R.string.os_error_generate_before_sign)
             return
         }

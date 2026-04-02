@@ -500,6 +500,8 @@ internal class TestDocumentDaoStub : com.example.anda.data.local.dao.DocumentDao
     override suspend fun countUnsynced(): Int = 2
     override suspend fun countSignedSince(sinceEpochMs: Long): Int = 5
     override suspend fun countExpiringBetween(nowEpochMs: Long, untilEpochMs: Long): Int = 3
+    // New DAO API added: countExpiredBefore
+    override suspend fun countExpiredBefore(nowEpochMs: Long): Int = 0
     // LGPD stubs
     override suspend fun getAllByEmployee(cpf: String): List<com.example.anda.data.local.entity.DocumentEntity> = emptyList()
     override suspend fun getAllByCompany(cnpj: String): List<com.example.anda.data.local.entity.DocumentEntity> = emptyList()

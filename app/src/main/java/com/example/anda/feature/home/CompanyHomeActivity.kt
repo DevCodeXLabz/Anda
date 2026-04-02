@@ -20,6 +20,7 @@ import com.example.anda.feature.os.OsActivity
 import com.example.anda.feature.scanner.CaScannerActivity
 import com.example.anda.feature.settings.SettingsActivity
 import com.example.anda.feature.requests.ServiceRequestsActivity
+import com.example.anda.feature.compliance.ComplianceAlertsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -116,6 +117,20 @@ class CompanyHomeActivity : SecuredHomeActivity() {
         }
         binding.openDocumentsButton.setOnClickListener {
             startActivity(Intent(this, DocumentsActivity::class.java))
+        }
+
+        binding.openComplianceAlertsButton.setOnClickListener {
+            // Try deep link first
+            val deep = Intent(Intent.ACTION_VIEW).apply {
+                data = android.net.Uri.parse("anda://app/compliance_alerts")
+                `package` = packageName
+            }
+            runCatching {
+                startActivity(deep)
+            }.onFailure {
+                // fallback to explicit intent
+                startActivity(Intent(this, ComplianceAlertsActivity::class.java))
+            }
         }
 
         // ── Service Requests ────────────────────────────────────────────

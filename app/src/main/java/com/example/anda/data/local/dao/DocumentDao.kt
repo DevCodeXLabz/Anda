@@ -146,6 +146,11 @@ interface DocumentDao {
     )
     suspend fun countExpiringBetween(nowEpochMs: Long, untilEpochMs: Long): Int
 
+    @Query(
+        "SELECT COUNT(*) FROM documents WHERE validUntil IS NOT NULL AND validUntil < :nowEpochMs"
+    )
+    suspend fun countExpiredBefore(nowEpochMs: Long): Int
+
     // ─── LGPD / GDPR ──────────────────────────────────────────────────────────
 
     @Query("SELECT * FROM documents WHERE signedBy = :cpf ORDER BY updatedAt DESC")

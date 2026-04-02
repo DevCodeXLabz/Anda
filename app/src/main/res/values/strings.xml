@@ -814,6 +814,7 @@ Validade: %6$s
     <string name="company_home_open_cat">⚠️  CAT — Acidente do Trabalho</string>
     <string name="company_home_open_os">📝  OS — Ordem de Servico (NR-01)</string>
     <string name="company_home_open_scanner">📷  Scanner de C.A.</string>
+            <string name="company_home_open_compliance_alerts">🔔  Alertas de conformidade</string>
     <string name="company_home_open_documents">🗂️  Documentos locais</string>
     <string name="company_home_open_service_requests">📨  Solicitações de Serviço</string>
     <string name="company_home_open_epi">🦺  Gestao de EPI</string>
@@ -1193,6 +1194,23 @@ Sincronização: %5$s</string>
     <string name="compliance_alerts_severity_critical">CRITICO</string>
     <string name="compliance_alerts_severity_warning">ALERTA</string>
     <string name="compliance_alerts_severity_info">INFO</string>
+    <string name="compliance_alerts_notification_permission_required">Permita notificações para receber alertas automáticos de conformidade.</string>
+    <string name="compliance_alerts_notification_permission_rationale">Sem essa permissão, o app não consegue te avisar sobre documentos críticos ou vencidos.</string>
+    <string name="compliance_alerts_notification_permission_denied">Permissão negada. Você pode habilitar notificações nas Configurações do app.</string>
+    <string name="compliance_alerts_check_requested">Verificação solicitada.</string>
+    <string name="compliance_alerts_open_settings">Abrir configurações</string>
+    <string name="compliance_alerts_meta_template">%1$s | Validade: %2$s</string>
+    <!-- Compliance filter chips -->
+    <string name="compliance_filter_all">Todos</string>
+    <string name="compliance_filter_expired">Vencido</string>
+    <string name="compliance_filter_critical">Crítico</string>
+    <string name="compliance_filter_warning">Alerta</string>
+    <string name="compliance_filter_count_template">%1$s (%2$d)</string>
+    <string name="compliance_alerts_filter_empty">Nenhum alerta nesta categoria.</string>
+    <!-- Days badge in alert item -->
+    <string name="compliance_alert_days_remaining">%1$d d</string>
+    <string name="compliance_alert_expires_today">Hoje!</string>
+    <string name="compliance_alert_overdue">-%1$d d</string>
 </resources>
 
 
