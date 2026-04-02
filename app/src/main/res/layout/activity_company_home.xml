@@ -296,6 +296,14 @@
                         android:text="@string/company_home_open_scanner" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/openComplianceAlertsButton"
+                        style="@style/Widget.Anda.Button.Tonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/company_home_open_compliance_alerts" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/openEpiButton"
                         style="@style/Widget.Anda.Button.Tonal"
                         android:layout_width="match_parent"

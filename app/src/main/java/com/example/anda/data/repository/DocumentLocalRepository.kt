@@ -11,6 +11,9 @@ import com.example.anda.data.requests.ServiceRequestLifecyclePolicy
 import com.example.anda.data.requests.ServiceRequestStatus
 import com.example.anda.data.sync.SyncQueueRepository
 import android.util.Log
+import com.example.anda.BuildConfig
+import com.example.anda.util.CnpjUtils
+import com.example.anda.core.stability.CrashShield
 import com.example.anda.domain.DocumentTypeNormalizer
 import kotlinx.coroutines.flow.first
 import java.text.SimpleDateFormat
@@ -168,6 +171,16 @@ object DocumentLocalRepository {
 
     suspend fun pendingSyncCount(): Int = SyncQueueRepository.pendingCount()
 
+    /**
+     * Public helper to count documents expired before provided epoch milliseconds.
+     */
+    suspend fun countExpiredBefore(nowEpochMs: Long): Int = dao().countExpiredBefore(nowEpochMs)
+
+    /**
+     * Public helper to count documents expiring between two epoch millisecond instants.
+     */
+    suspend fun countExpiringBetween(nowEpochMs: Long, untilEpochMs: Long): Int = dao().countExpiringBetween(nowEpochMs, untilEpochMs)
+
     suspend fun forceSyncDocument(documentId: String) {
         SyncQueueRepository.enqueueDocumentSync(
             documentId = documentId,
@@ -267,8 +280,55 @@ object DocumentLocalRepository {
     }
 
     private suspend fun linkRequestForDocument(document: DocumentEntity, event: ServiceRequestLifecyclePolicy.DocumentEvent) {
-        val requestCode = document.sourceRequestCode ?: return
-        updateRequestStatusFromEvent(requestCode, event, document)
+        val database = db ?: return
+        val explicitRequestCode = document.sourceRequestCode
+        if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "linkRequestForDocument: doc=${document.documentId} explicitRequestCode=$explicitRequestCode")
+        if (!explicitRequestCode.isNullOrBlank()) {
+            // Try to link to the explicit request code first
+            try {
+                val explicit = database.serviceRequestDao().findByRequestCode(explicitRequestCode)
+                if (explicit != null) {
+                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Found explicit request for code=$explicitRequestCode -> linking")
+                    updateRequestStatusFromEvent(explicitRequestCode, event, document)
+                    return
+                } else {
+                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Explicit request code provided but not found: $explicitRequestCode - will try fallback by CNPJ")
+                }
+            } catch (t: Throwable) {
+                Log.e("DocumentLocalRepo", "Error while looking up explicit request code=$explicitRequestCode", t)
+                CrashShield.recordRecoverableError("DocumentLocalRepository/linkRequestForDocument/explicitLookup", t)
+                // continue to fallback
+            }
+        }
+
+        // Fallback: try to find an active request for the contractor CNPJ (companyCnpj is plain in the DocumentEntity passed)
+        try {
+                val companyCnpjPlain = document.companyCnpj
+                if (companyCnpjPlain.isNotBlank()) {
+                    // Normalize to digits-only and try both forms so tests that use raw or formatted CNPJ will match
+                    val normalizedCnpj = CnpjUtils.normalizeCnpj(companyCnpjPlain)
+                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Fallback lookup by CNPJ: raw='$companyCnpjPlain' normalized='$normalizedCnpj'")
+
+                    var active = database.serviceRequestDao().listActiveByContractorCnpj(companyCnpjPlain)
+                    if (active.isEmpty() && normalizedCnpj != companyCnpjPlain) {
+                        if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "No active requests found for raw CNPJ, trying normalized")
+                        active = database.serviceRequestDao().listActiveByContractorCnpj(normalizedCnpj)
+                    }
+
+                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "activeRequestsFound=${'$'}{active.size}")
+                    if (active.isNotEmpty()) {
+                        val firstActive = active.first()
+                        if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Linking to active request code=${'$'}{firstActive.requestCode} for doc=${document.documentId}")
+                        updateRequestStatusFromEvent(firstActive.requestCode, event, document)
+                    }
+                } else {
+                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "No companyCnpj provided on document ${document.documentId}; skipping fallback")
+                }
+        } catch (t: Throwable) {
+            // Do not let fallback failures crash the repository - record and continue
+            Log.e("DocumentLocalRepo", "Fallback lookup failed", t)
+            CrashShield.recordRecoverableError("DocumentLocalRepository/linkRequestForDocument/fallback", t)
+        }
     }
 
     private fun notifyRequestLifecycleProgress(

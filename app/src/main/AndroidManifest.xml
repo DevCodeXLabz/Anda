@@ -177,6 +177,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".feature.compliance.ComplianceAlertsActivity"
+            android:exported="true"
+            android:label="@string/manifest_label_compliance_alerts"
+            android:theme="@style/Theme.Anda">
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="anda" android:host="app" android:path="/compliance_alerts" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name"

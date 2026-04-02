@@ -36,10 +36,26 @@ Recommended local steps
 .\gradlew.bat :app:assembleRelease
 ```
 
+Quick helper scripts (recommended):
+
+1) Generate a test keystore and a matching `keystore.properties` automatically (PowerShell):
+
+```powershell
+.\scripts\generate-test-keystore.ps1
+```
+
+2) Perform a safe clean and assemble debug APK with refreshed dependencies:
+
+```powershell
+.\scripts\clean-build.ps1
+```
+
 Notes about the project `build.gradle.kts` behavior
 ---------------------------------------------------
 - The `app/build.gradle.kts` file attempts to load `keystore.properties` from the project root. If the `storeFile` path resolves to a missing file, the build will continue and produce an unsigned release APK, and a warning will be printed during configuration.
 - This design avoids failing the build on machines without a keystore, while enabling local signed builds when the keystore and properties are available.
+
+Security reminder: never commit `keystore.properties` with real credentials. Use `keystore.properties.sample` as example and add `keystore.properties` to `.gitignore`.
 
 Security
 --------

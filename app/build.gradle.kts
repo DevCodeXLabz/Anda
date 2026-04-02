@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.androidx.work.runtime.ktx)

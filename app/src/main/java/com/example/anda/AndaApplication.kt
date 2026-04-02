@@ -27,6 +27,9 @@ class AndaApplication : Application() {
         runCatching {
             val notificationService = ServiceRequestNotificationService(this)
             notificationService.createNotificationChannel()
+            // Compliance alerts channel
+            val complianceNotifier = com.example.anda.notifications.ComplianceNotificationService(this)
+            complianceNotifier.createNotificationChannel()
             Log.d("AndaApplication", "Notification channels initialized")
         }.onFailure { throwable ->
             CrashShield.recordRecoverableError("AndaApplication/NotificationService.initialize", throwable)
@@ -53,6 +56,8 @@ class AndaApplication : Application() {
             runCatching {
                 SyncScheduler.schedulePeriodicSync(this)
                 SyncScheduler.scheduleImmediateSync(this)
+                // Schedule compliance alerts periodic check
+                com.example.anda.data.sync.ComplianceAlertScheduler.schedulePeriodicChecks(this)
             }.onFailure {
                 CrashShield.recordRecoverableError("AndaApplication/SyncScheduler", it)
                 Log.e("AndaApplication", "Falha no agendamento automatico de sincronizacao", it)
