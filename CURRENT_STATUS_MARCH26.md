@@ -1,4 +1,9 @@
 # ANDA APP - Current Implementation Status
+> LEGACY STATUS FILE (historical reference)
+>
+> This file is no longer the source of truth.
+> Use `PROJECT_MASTER_STATUS.md` for current status.
+
 **Date**: March 26, 2026  
 **Overall Status**: 🟢 **PROGRESSING WELL**
 
