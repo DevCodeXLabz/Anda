@@ -122,6 +122,8 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")  // PKIX support for certificates
 
     testImplementation(libs.junit)
+    testImplementation("org.mockito:mockito-core:5.4.0")
+    
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.room.testing)

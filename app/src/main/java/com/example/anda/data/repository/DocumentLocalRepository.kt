@@ -26,12 +26,50 @@ object DocumentLocalRepository {
     private var db: AppDatabase? = null
     @Volatile
     private var appContext: Context? = null
+    // Test-only hook: when set, this provider will be used to obtain a ServiceRequestDao
+    // allowing unit tests to inject a mock DAO without needing an AppDatabase instance.
+    @Volatile
+    private var testServiceRequestDaoProvider: (() -> com.example.anda.data.local.dao.ServiceRequestDao)? = null
 
     fun initialize(context: Context) {
         appContext = context.applicationContext
         if (db != null) return
         LocalDataProtection.initialize(context.applicationContext)
         db = AppDatabase.getInstance(context.applicationContext)
+    }
+
+    /**
+     * Test helper: temporarily use the provided AppDatabase to execute the internal
+     * linkRequestForDocument logic. This avoids the need to initialize the full
+     * repository during unit tests and is intended for test use only.
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    suspend fun linkRequestForDocumentForTesting(
+        testDatabase: AppDatabase,
+        document: com.example.anda.data.local.entity.DocumentEntity,
+        event: com.example.anda.data.requests.ServiceRequestLifecyclePolicy.DocumentEvent
+    ) {
+        val previous = db
+        db = testDatabase
+        // Use a provider that returns the real DAO from this AppDatabase for the duration of the test
+        val previousProvider = testServiceRequestDaoProvider
+        if (testServiceRequestDaoProvider == null) {
+            testServiceRequestDaoProvider = { testDatabase.serviceRequestDao() }
+        }
+        try {
+            linkRequestForDocument(document, event)
+        } finally {
+            db = previous
+            testServiceRequestDaoProvider = previousProvider
+        }
+    }
+
+    /**
+     * Test helper: set a ServiceRequestDao provider (used by unit tests to inject mocks)
+     */
+    @Suppress("unused")
+    fun setTestServiceRequestDaoProvider(provider: (() -> com.example.anda.data.local.dao.ServiceRequestDao)?) {
+        testServiceRequestDaoProvider = provider
     }
 
     suspend fun saveDraft(document: DocumentEntity) {
@@ -244,7 +282,8 @@ object DocumentLocalRepository {
         document: DocumentEntity
     ) {
         val database = db ?: return
-        val request = database.serviceRequestDao().findByRequestCode(requestCode) ?: return
+        val dao = testServiceRequestDaoProvider?.invoke() ?: database.serviceRequestDao()
+        val request = dao.findByRequestCode(requestCode) ?: return
         
         val nextStatus = ServiceRequestLifecyclePolicy.nextStatus(request.status, event)
         if (nextStatus != request.status) {
@@ -258,7 +297,7 @@ object DocumentLocalRepository {
             val logLine = "[ANDA-LINK][$stamp] req=$requestCode type=${document.documentType} doc=${document.documentId};$eventCode status=$nextStatus"
             val newNotes = if (request.notes.isBlank()) logLine else "${request.notes}\n$logLine"
             
-            database.serviceRequestDao().updateNotesAndStatus(
+            dao.updateNotesAndStatus(
                 id = request.id,
                 notes = newNotes,
                 status = nextStatus
@@ -280,13 +319,14 @@ object DocumentLocalRepository {
     }
 
     private suspend fun linkRequestForDocument(document: DocumentEntity, event: ServiceRequestLifecyclePolicy.DocumentEvent) {
-        val database = db ?: return
+        val database = db // may be null during unit tests when provider is used
         val explicitRequestCode = document.sourceRequestCode
         if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "linkRequestForDocument: doc=${document.documentId} explicitRequestCode=$explicitRequestCode")
         if (!explicitRequestCode.isNullOrBlank()) {
             // Try to link to the explicit request code first
             try {
-                val explicit = database.serviceRequestDao().findByRequestCode(explicitRequestCode)
+                val explicitDao = testServiceRequestDaoProvider?.invoke() ?: database?.serviceRequestDao()
+                val explicit = explicitDao?.findByRequestCode(explicitRequestCode)
                 if (explicit != null) {
                     if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Found explicit request for code=$explicitRequestCode -> linking")
                     updateRequestStatusFromEvent(explicitRequestCode, event, document)
@@ -301,29 +341,37 @@ object DocumentLocalRepository {
             }
         }
 
-        // Fallback: try to find an active request for the contractor CNPJ (companyCnpj is plain in the DocumentEntity passed)
+        // Fallback: try candidate CNPJ values (original/formatted and normalized digits-only)
         try {
-                val companyCnpjPlain = document.companyCnpj
-                if (companyCnpjPlain.isNotBlank()) {
-                    // Normalize to digits-only and try both forms so tests that use raw or formatted CNPJ will match
-                    val normalizedCnpj = CnpjUtils.normalizeCnpj(companyCnpjPlain)
-                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Fallback lookup by CNPJ: raw='$companyCnpjPlain' normalized='$normalizedCnpj'")
+            val companyCnpjPlain = document.companyCnpj
+            val candidates = com.example.anda.util.DocumentLookupUtils.candidateCnpjLookupValues(companyCnpjPlain)
+            if (candidates.isEmpty()) {
+                if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "No companyCnpj provided on document ${document.documentId}; skipping fallback")
+                return
+            }
 
-                    var active = database.serviceRequestDao().listActiveByContractorCnpj(companyCnpjPlain)
-                    if (active.isEmpty() && normalizedCnpj != companyCnpjPlain) {
-                        if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "No active requests found for raw CNPJ, trying normalized")
-                        active = database.serviceRequestDao().listActiveByContractorCnpj(normalizedCnpj)
-                    }
+            if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Fallback lookup candidates=$candidates for doc=${document.documentId}")
 
-                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "activeRequestsFound=${'$'}{active.size}")
+            var found: com.example.anda.data.local.entity.ServiceRequestEntity? = null
+            for (candidate in candidates) {
+                try {
+                    val dao = testServiceRequestDaoProvider?.invoke() ?: database!!.serviceRequestDao()
+                    val active = dao.listActiveByContractorCnpj(candidate)
                     if (active.isNotEmpty()) {
-                        val firstActive = active.first()
-                        if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Linking to active request code=${'$'}{firstActive.requestCode} for doc=${document.documentId}")
-                        updateRequestStatusFromEvent(firstActive.requestCode, event, document)
+                        found = active.first()
+                        if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "Found active request for candidate=$candidate -> code=${found.requestCode}")
+                        break
                     }
-                } else {
-                    if (BuildConfig.DEBUG) Log.d("DocumentLocalRepo", "No companyCnpj provided on document ${document.documentId}; skipping fallback")
+                } catch (inner: Throwable) {
+                    // Record recoverable errors for each candidate lookup but continue trying others
+                    Log.e("DocumentLocalRepo", "Error while looking up candidate CNPJ=$candidate", inner)
+                    CrashShield.recordRecoverableError("DocumentLocalRepository/linkRequestForDocument/candidateLookup", inner)
                 }
+            }
+
+            if (found != null) {
+                updateRequestStatusFromEvent(found.requestCode, event, document)
+            }
         } catch (t: Throwable) {
             // Do not let fallback failures crash the repository - record and continue
             Log.e("DocumentLocalRepo", "Fallback lookup failed", t)
